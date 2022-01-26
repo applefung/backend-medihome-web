@@ -1,6 +1,6 @@
 import { IsString } from "class-validator";
 
-export class CreateCarouselDto {
+export class UpdateCarouselDto {
     @IsString()
     url: string;
 }
