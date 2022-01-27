@@ -16,19 +16,19 @@ export class Doctor {
   @Column('json')
   name: BilingualFormat;
 
-  @Column('json')
+  @Column({ type: 'json', nullable: true })
   languages: BilingualFormat;
 
-  @Column('json')
+  @Column({ type: 'json', nullable: true })
   contacts: ContactsFormat;
 
-  @Column('json')
+  @Column({ type: 'json', nullable: true })
   qualifications: BilingualFormat;
 
-  @Column('json')
+  @Column({ type: 'json', nullable: true })
   services: BilingualFormat;
 
-  @Column('json')
+  @Column({ type: 'json', nullable: true })
   hospitalAffiliations: BilingualFormat;
 
   @CreateDateColumn()
