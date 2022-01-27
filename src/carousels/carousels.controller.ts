@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CarouselsService } from './carousels.service';
 import { CreateCarouselDto, UpdateCarouselDto } from './dtos';
 
@@ -13,7 +21,7 @@ export class CarouselsController {
 
   @Get(':id')
   getCarousel(@Param('id') id: string) {
-    return this.carouselsService.getCarousel({id});
+    return this.carouselsService.getCarousel({ id });
   }
 
   @Post()
@@ -22,12 +30,17 @@ export class CarouselsController {
   }
 
   @Patch(':id')
-  updateCarousel(@Param('id') id: string, @Body() data: UpdateCarouselDto) {
+  async updateCarousel(
+    @Param('id') id: string,
+    @Body() data: UpdateCarouselDto,
+  ) {
+    await this.carouselsService.getCarouselOrFail({ id });
     return this.carouselsService.updateCarousel(id, data);
   }
 
   @Delete(':id')
-  deleteCarousel(@Param('id') id: string) {
+  async deleteCarousel(@Param('id') id: string) {
+    await this.carouselsService.getCarouselOrFail({ id });
     return this.carouselsService.deleteCarousel(id);
   }
 }

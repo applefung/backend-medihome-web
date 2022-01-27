@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Carousel } from 'src/entities/carousels.entity';
+import { getResponseByErrorCode } from 'src/utils/error';
 import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 
 @Injectable()
@@ -13,8 +14,22 @@ export class CarouselsService {
     return this.carouselsRepository.find();
   }
 
-  getCarousel(conditions: FindConditions<Carousel>, options?: FindOneOptions<Carousel>) {
+  getCarousel(
+    conditions: FindConditions<Carousel>,
+    options?: FindOneOptions<Carousel>,
+  ) {
     return this.carouselsRepository.findOne(conditions, options);
+  }
+
+  async getCarouselOrFail(
+    conditions: FindConditions<Carousel>,
+    options?: FindOneOptions<Carousel>,
+  ) {
+    const result = await this.carouselsRepository.findOne(conditions, options);
+    if (!result) {
+      throw new NotFoundException(getResponseByErrorCode('CAROUSEL_NOT_FOUND'));
+    }
+    return result;
   }
 
   createCarousel(data: Pick<Carousel, 'url'>) {

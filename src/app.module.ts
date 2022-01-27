@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CarouselsModule } from './carousels/carousels.module';
+import { SpecialtyModule } from './specialties/specialties.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { CarouselsModule } from './carousels/carousels.module';
       inject: [ConfigService],
     }),
     CarouselsModule,
+    SpecialtyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
