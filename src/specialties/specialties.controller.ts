@@ -7,8 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CreateSpecialtyDto } from './dtos/create-specialty.dto';
-import { UpdateSpecialtyDto } from './dtos/update-specialty.dto';
+import { SpecialtyDto } from './dtos';
 import { SpecialtiesService } from './specialties.service';
 
 @Controller('specialties')
@@ -26,15 +25,12 @@ export class SpecialtiesController {
   }
 
   @Post()
-  createSpecialty(@Body() data: CreateSpecialtyDto) {
+  createSpecialty(@Body() data: SpecialtyDto) {
     return this.specialtiesService.createSpecialty(data);
   }
 
   @Patch(':id')
-  async updateSpecialty(
-    @Param('id') id: string,
-    @Body() data: UpdateSpecialtyDto,
-  ) {
+  async updateSpecialty(@Param('id') id: string, @Body() data: SpecialtyDto) {
     await this.specialtiesService.getSpecialtyOrFail({ id });
     return this.specialtiesService.updateSpecialty(id, data);
   }
