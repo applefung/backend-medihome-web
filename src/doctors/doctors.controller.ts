@@ -19,22 +19,9 @@ export class DoctorsController {
   @Get()
   getDoctors(
     @Query()
-    {
-      specialty,
-      district,
-      search,
-      page = '1',
-      limit = '5',
-      order,
-      orderBy,
-    }: GetDoctorsDto,
+    data: GetDoctorsDto,
   ) {
-    // limit
-    const take = parseInt(limit);
-    // offset
-    const skip = (parseInt(page) - 1) * take;
-
-    return this.doctorsService.getDoctors();
+    return this.doctorsService.getDoctors(data);
   }
 
   @Get(':id')

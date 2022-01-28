@@ -1,4 +1,6 @@
-import { BilingualFormat, ContactsFormat } from 'src/types/common';
+import { BilingualArrayFormat, BilingualFormat } from 'src/types/common';
+import { ContactsFormat } from 'src/types/doctor';
+import { languages } from 'src/utils/doctor';
 import {
   Column,
   CreateDateColumn,
@@ -16,20 +18,20 @@ export class Doctor {
   @Column('json')
   name: BilingualFormat;
 
-  @Column({ type: 'json', nullable: true })
-  languages: BilingualFormat;
+  @Column({ type: 'enum', enum: languages, nullable: true, array: true })
+  languages: string[];
 
   @Column({ type: 'json', nullable: true })
   contacts: ContactsFormat;
 
   @Column({ type: 'json', nullable: true })
-  qualifications: BilingualFormat;
+  qualifications: BilingualArrayFormat;
 
   @Column({ type: 'json', nullable: true })
-  services: BilingualFormat;
+  services: BilingualArrayFormat;
 
   @Column({ type: 'json', nullable: true })
-  hospitalAffiliations: BilingualFormat;
+  hospitalAffiliations: BilingualArrayFormat;
 
   @CreateDateColumn()
   createdAt: Date;

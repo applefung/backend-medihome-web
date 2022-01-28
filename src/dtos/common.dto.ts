@@ -1,11 +1,36 @@
-import { IsDefined, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class BilingualDto {
-  @IsDefined()
   @IsString()
   en: string;
 
-  @IsDefined()
   @IsString()
   tc: string;
+}
+
+export class BilingualArrayDto {
+  @IsString({ each: true })
+  @IsArray()
+  en: string[];
+
+  @IsString({ each: true })
+  @IsArray()
+  tc: string[];
+}
+
+export class ContactsDto {
+  @IsOptional()
+  @IsString({ each: true })
+  @IsArray()
+  email: string[];
+
+  @IsOptional()
+  @IsString({ each: true })
+  @IsArray()
+  phone: string[];
+
+  @IsOptional()
+  @IsString({ each: true })
+  @IsArray()
+  whatsapp: string[];
 }

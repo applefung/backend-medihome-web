@@ -1,4 +1,6 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsIn, IsNumberString, IsOptional, IsString } from 'class-validator';
+import { Order, orders } from 'src/utils/common';
+import { DoctorField, doctorFields } from 'src/utils/doctor';
 
 export class GetDoctorsDto {
   @IsOptional()
@@ -14,18 +16,20 @@ export class GetDoctorsDto {
   search: string;
 
   @IsOptional()
-  @IsString()
+  @IsNumberString()
   page: string;
 
   @IsOptional()
-  @IsString()
+  @IsNumberString()
   limit: string;
 
   @IsOptional()
   @IsString()
-  order: string;
+  @IsIn(orders)
+  order: Order;
 
   @IsOptional()
   @IsString()
-  orderBy: string;
+  @IsIn(doctorFields)
+  orderBy: DoctorField;
 }

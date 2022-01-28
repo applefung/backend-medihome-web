@@ -1,40 +1,34 @@
 import { Type } from 'class-transformer';
-import { IsDefined, IsOptional, ValidateNested } from 'class-validator';
-import { BilingualDto } from 'src/dtos';
+import { IsOptional, IsString, ValidateNested } from 'class-validator';
+import { BilingualArrayDto, BilingualDto, ContactsDto } from 'src/dtos';
+import { languages } from 'src/utils/doctor';
 
 export class DoctorDto {
-  @IsDefined()
   @ValidateNested()
   @Type(() => BilingualDto)
   name: BilingualDto;
 
   @IsOptional()
-  @IsDefined()
-  @ValidateNested()
-  @Type(() => BilingualDto)
-  languages: BilingualDto;
+  @IsString({ each: true })
+  languages: typeof languages;
 
   @IsOptional()
-  @IsDefined()
   @ValidateNested()
-  @Type(() => BilingualDto)
-  contacts: BilingualDto;
+  @Type(() => ContactsDto)
+  contacts: ContactsDto;
 
   @IsOptional()
-  @IsDefined()
   @ValidateNested()
-  @Type(() => BilingualDto)
-  qualifications: BilingualDto;
+  @Type(() => BilingualArrayDto)
+  qualifications: BilingualArrayDto;
 
   @IsOptional()
-  @IsDefined()
   @ValidateNested()
-  @Type(() => BilingualDto)
-  services: BilingualDto;
+  @Type(() => BilingualArrayDto)
+  services: BilingualArrayDto;
 
   @IsOptional()
-  @IsDefined()
   @ValidateNested()
-  @Type(() => BilingualDto)
-  hospitalAffiliations: BilingualDto;
+  @Type(() => BilingualArrayDto)
+  hospitalAffiliations: BilingualArrayDto;
 }

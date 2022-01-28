@@ -2,8 +2,27 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Carousel } from 'src/entities/carousels.entity';
 import { Doctor } from 'src/entities/doctors.entity';
+import { OrderType } from 'src/types/common';
+import { Order } from 'src/utils/common';
+import { DoctorField } from 'src/utils/doctor';
 import { getResponseByErrorCode } from 'src/utils/error';
-import { FindConditions, FindOneOptions, Repository } from 'typeorm';
+import {
+  FindConditions,
+  FindManyOptions,
+  FindOneOptions,
+  MoreThan,
+  Repository,
+} from 'typeorm';
+
+interface GetDoctorsParams {
+  specialty: string;
+  district: string;
+  search: string;
+  page: string;
+  limit: string;
+  order: Order;
+  orderBy: DoctorField;
+}
 
 @Injectable()
 export class DoctorsService {
@@ -11,8 +30,37 @@ export class DoctorsService {
     @InjectRepository(Doctor)
     private doctorsRepository: Repository<Doctor>,
   ) {}
-  getDoctors() {
-    return this.doctorsRepository.find();
+  getDoctors({
+    specialty,
+    district,
+    search,
+    page = '1',
+    limit = '5',
+    order = 'DESC',
+    orderBy = 'id',
+  }: GetDoctorsParams) {
+    // limit
+    const take = parseInt(limit);
+    // offset
+    const skip = (parseInt(page) - 1) * take;
+    let whereOptions = '';
+    if (specialty) {
+      whereOptions = `specialty: ${specialty},`;
+    }
+    if (district) {
+      whereOptions = `${whereOptions}district: ${district},`;
+    }
+    if (search) {
+      whereOptions = `${whereOptions}CAST(name.tc->'tc' AS varchar) ilike '%${search}%' or CAST(name.en->'en' AS varchar) ilike '%${search}%' or CAST(qualifications.tc->'tc' AS varchar) ilike '%${search}%' or CAST(qualifications.en->'en' AS varchar) ilike '%${search}%' or CAST(hospitalAffiliations.tc->'tc' AS varchar) ilike '%${search}%' or CAST(hospitalAffiliations.en->'en' AS varchar) ilike '%${search}%'`;
+    }
+    console.log('whereOptions', whereOptions);
+    return this.doctorsRepository
+      .createQueryBuilder()
+      .where(whereOptions)
+      .take(take)
+      .skip(skip)
+      .orderBy(orderBy, order as OrderType)
+      .getManyAndCount();
   }
 
   getDoctor(
