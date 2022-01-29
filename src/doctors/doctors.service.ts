@@ -51,9 +51,15 @@ export class DoctorsService {
       whereOptions = `${whereOptions}district: ${district},`;
     }
     if (search) {
-      whereOptions = `${whereOptions}CAST(name.tc->'tc' AS varchar) ilike '%${search}%' or CAST(name.en->'en' AS varchar) ilike '%${search}%' or CAST(qualifications.tc->'tc' AS varchar) ilike '%${search}%' or CAST(qualifications.en->'en' AS varchar) ilike '%${search}%' or CAST(hospitalAffiliations.tc->'tc' AS varchar) ilike '%${search}%' or CAST(hospitalAffiliations.en->'en' AS varchar) ilike '%${search}%'`;
+      whereOptions = `${whereOptions}CAST(name->'tc' AS varchar) ilike '%${search}%' or CAST(name->'en' AS varchar) ilike '%${search}%' 
+      or (CASE 
+        WHEN "qualifications" IS NOT NULL  
+        THEN (CAST("qualifications"->'tc' AS varchar) ilike '%${search}%' or CAST("qualifications"->'en' AS varchar) ilike '%${search}%') END) 
+      or (CASE 
+        WHEN "hospitalAffiliations" IS NOT NULL 
+        THEN (CAST("hospitalAffiliations"->'tc' AS varchar) ilike '%${search}%' or CAST("hospitalAffiliations"->'en' AS varchar) ilike '%${search}%') END)`;
     }
-    console.log('whereOptions', whereOptions);
+
     return this.doctorsRepository
       .createQueryBuilder()
       .where(whereOptions)
