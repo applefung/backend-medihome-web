@@ -1,5 +1,6 @@
 import { BilingualArrayFormat, BilingualFormat } from 'src/types/common';
 import { ContactsFormat } from 'src/types/doctor';
+import { Gender, genders } from 'src/utils/common';
 import { languages } from 'src/utils/doctor';
 import {
   Column,
@@ -17,6 +18,9 @@ export class Doctor {
 
   @Column('json')
   name: BilingualFormat;
+
+  @Column({ type: 'enum', enum: genders, nullable: true })
+  gender: Gender;
 
   @Column({ type: 'enum', enum: languages, nullable: true, array: true })
   languages: string[];

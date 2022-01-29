@@ -25,23 +25,23 @@ export class DoctorsController {
   }
 
   @Get(':id')
-  getSpecialty(@Param('id') id: string) {
+  getDoctor(@Param('id') id: string) {
     return this.doctorsService.getDoctor({ id });
   }
 
   @Post()
-  createSpecialty(@Body() data: DoctorDto) {
+  createDoctor(@Body() data: DoctorDto) {
     return this.doctorsService.createDoctor(data);
   }
 
   @Patch(':id')
-  async updateSpecialty(@Param('id') id: string, @Body() data: DoctorDto) {
+  async updateDoctor(@Param('id') id: string, @Body() data: DoctorDto) {
     await this.doctorsService.getDoctorOrFail({ id });
     return this.doctorsService.updateDoctor(id, data);
   }
 
   @Delete(':id')
-  async deleteSpecialty(@Param('id') id: string) {
+  async deleteDoctor(@Param('id') id: string) {
     await this.doctorsService.getDoctorOrFail({ id });
     return this.doctorsService.deleteDoctor(id);
   }
