@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Profile {
+export class PatientProfile {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -17,10 +17,13 @@ export class Profile {
   gender: Gender;
 
   @Column({ nullable: true })
-  dateOfBorn: Date;
+  dateOfBirth: Date;
 
-  @Column()
-  username: string;
+  @Column({ nullable: true })
+  height: number;
+
+  @Column({ nullable: true })
+  weight: number;
 
   @CreateDateColumn()
   createdAt: Date;

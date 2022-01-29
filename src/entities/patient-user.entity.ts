@@ -3,9 +3,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { PatientProfile } from './patient-profile.entity';
 
 @Entity()
 export class PatientUser {
@@ -20,6 +23,10 @@ export class PatientUser {
 
   @Column()
   username: string;
+
+  @OneToOne(() => PatientProfile, { cascade: ['insert', 'update'] })
+  @JoinColumn()
+  patientProfile: PatientProfile;
 
   @CreateDateColumn()
   createdAt: Date;

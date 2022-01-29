@@ -1,18 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Carousel } from 'src/entities/carousels.entity';
-import { Doctor } from 'src/entities/doctors.entity';
+import { Doctor } from 'src/entities';
 import { OrderType } from 'src/types/common';
 import { Order } from 'src/utils/common';
 import { DoctorField } from 'src/utils/doctor';
 import { getResponseByErrorCode } from 'src/utils/error';
-import {
-  FindConditions,
-  FindManyOptions,
-  FindOneOptions,
-  MoreThan,
-  Repository,
-} from 'typeorm';
+import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 
 interface GetDoctorsParams {
   specialty: string;

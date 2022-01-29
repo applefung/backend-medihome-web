@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { CarouselsService } from './carousels.service';
-import { CreateCarouselDto, UpdateCarouselDto } from './dtos';
+import { CarouselDto } from './dtos';
 
 @Controller('carousels')
 export class CarouselsController {
@@ -25,15 +25,12 @@ export class CarouselsController {
   }
 
   @Post()
-  createCarousel(@Body() data: CreateCarouselDto) {
+  createCarousel(@Body() data: CarouselDto) {
     return this.carouselsService.createCarousel(data);
   }
 
   @Patch(':id')
-  async updateCarousel(
-    @Param('id') id: string,
-    @Body() data: UpdateCarouselDto,
-  ) {
+  async updateCarousel(@Param('id') id: string, @Body() data: CarouselDto) {
     await this.carouselsService.getCarouselOrFail({ id });
     return this.carouselsService.updateCarousel(id, data);
   }
