@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Gender, genders } from 'src/utils/common';
+import { Gender, genders } from '@src/utils/common';
 
 export class PatientUserDto {
   @IsEmail()
@@ -25,8 +25,8 @@ export class PatientUserDto {
   dateOfBirth: string;
 
   @IsNumber()
-  height: string;
+  height: number;
 
   @IsNumber()
-  weight: string;
+  weight: number;
 }

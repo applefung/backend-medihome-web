@@ -6,9 +6,13 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import dayjs from 'dayjs';
 import { PatientUsersService } from './patient-users.service';
 import { PatientUserDto } from './dtos';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('carousels')
 export class PatientUsersController {
@@ -25,11 +29,16 @@ export class PatientUsersController {
   }
 
   @Post()
-  createPatientUser(@Body() { email, password, ...restData }: PatientUserDto) {
+  createPatientUser(
+    @Body() { email, password, dateOfBirth, ...restData }: PatientUserDto,
+  ) {
     return this.patientUsersService.createPatientUser({
       email,
       password,
-      // patientProfile: { ...restData },
+      patientProfile: {
+        dateOfBirth: dayjs(dateOfBirth).toDate(),
+        ...restData,
+      },
     });
   }
 
@@ -40,6 +49,16 @@ export class PatientUsersController {
   ) {
     await this.patientUsersService.getPatientUserOrFail({ id });
     return this.patientUsersService.updatPatientUser(id, data);
+  }
+
+  @Post(':id')
+  @UseInterceptors(FileInterceptor('file'))
+  async updateAvatar(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    await this.patientUsersService.getPatientUserOrFail({ id });
+    return this.patientUsersService.updateAvatar(id, file);
   }
 
   @Delete(':id')

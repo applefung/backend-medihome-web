@@ -1,4 +1,4 @@
-import { Gender, genders } from 'src/utils/common';
+import { Gender, genders } from '@src/utils/common';
 import {
   Column,
   CreateDateColumn,
@@ -12,6 +12,9 @@ import {
 export class PatientProfile {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column('bytea')
+  avatar: Buffer;
 
   @Column({ type: 'enum', enum: genders, nullable: true })
   gender: Gender;

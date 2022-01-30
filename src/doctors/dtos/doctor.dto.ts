@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsOptional, IsString, ValidateNested } from 'class-validator';
-import { BilingualArrayDto, BilingualDto, ContactsDto } from 'src/dtos';
-import { languages } from 'src/utils/doctor';
+import { BilingualArrayDto, BilingualDto, ContactsDto } from '@src/dtos';
+import { languages } from '@src/utils/doctor';
 
 export class DoctorDto {
   @ValidateNested()

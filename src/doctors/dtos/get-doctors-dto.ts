@@ -1,6 +1,6 @@
 import { IsIn, IsNumberString, IsOptional, IsString } from 'class-validator';
-import { Order, orders } from 'src/utils/common';
-import { DoctorField, doctorFields } from 'src/utils/doctor';
+import { Order, orders } from '@src/utils/common';
+import { DoctorField, doctorFields } from '@src/utils/doctor';
 
 export class GetDoctorsDto {
   @IsOptional()

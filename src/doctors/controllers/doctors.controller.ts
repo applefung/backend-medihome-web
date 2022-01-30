@@ -8,9 +8,8 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { DoctorsService } from './doctors.service';
-import { DoctorDto } from './dtos';
-import { GetDoctorsDto } from './dtos/get-doctors-dto';
+import { DoctorsService } from '../services/doctors.service';
+import { DoctorDto, GetDoctorsDto } from '../dtos';
 
 @Controller('doctors')
 export class DoctorsController {

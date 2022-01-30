@@ -1,7 +1,7 @@
-import { BilingualArrayFormat, BilingualFormat } from 'src/types/common';
-import { ContactsFormat } from 'src/types/doctor';
-import { Gender, genders } from 'src/utils/common';
-import { languages } from 'src/utils/doctor';
+import { BilingualArrayFormat, BilingualFormat } from '@src/types/common';
+import { CommentType, ContactsFormat } from '@src/types/doctor';
+import { Gender, genders } from '@src/utils/common';
+import { languages } from '@src/utils/doctor';
 import {
   Column,
   CreateDateColumn,
@@ -36,6 +36,9 @@ export class Doctor {
 
   @Column({ type: 'json', nullable: true })
   hospitalAffiliations: BilingualArrayFormat;
+
+  @Column({ type: 'json', nullable: true })
+  comments: CommentType[];
 
   @CreateDateColumn()
   createdAt: Date;

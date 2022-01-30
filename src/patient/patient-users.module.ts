@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Carousel } from 'src/entities/carousels.entity';
+import { PatientUser, PatientProfile } from '@src/entities';
 import { PatientUsersController } from './patient-users.controller';
 import { PatientUsersService } from './patient-users.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Carousel])],
+  imports: [TypeOrmModule.forFeature([PatientUser, PatientProfile])],
   controllers: [PatientUsersController],
   providers: [PatientUsersService],
 })

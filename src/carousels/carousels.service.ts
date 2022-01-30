@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Carousel } from 'src/entities';
-import { getResponseByErrorCode } from 'src/utils/error';
+import { Carousel } from '@src/entities';
+import { getResponseByErrorCode } from '@src/utils/error';
 import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 
 @Injectable()
