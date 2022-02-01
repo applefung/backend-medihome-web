@@ -1,5 +1,5 @@
-import { BilingualArrayFormat, BilingualFormat } from '@src/types/common';
-import { CommentType, ContactsFormat } from '@src/types/doctor';
+import type { BilingualArrayFormat, BilingualFormat } from '@src/types/common';
+import type { CommentType, ContactsFormat } from '@src/types/doctor';
 import { Gender, genders } from '@src/utils/common';
 import { languages } from '@src/utils/doctor';
 import {

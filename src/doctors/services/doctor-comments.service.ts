@@ -1,26 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Doctor } from '@src/entities';
-import { OrderType } from '@src/types/common';
-import { CommentType } from '@src/types/doctor';
-import { DoctorCommentParam } from '@src/types/doctor-comment';
-import { Order } from '@src/utils/common';
-import { DoctorField } from '@src/utils/doctor';
+import type { CommentType } from '@src/types/doctor';
+import type {
+  DoctorComment,
+  DoctorCommentParam,
+} from '@src/types/doctor-comment';
 import { getResponseByErrorCode } from '@src/utils/error';
 import dayjs from 'dayjs';
-import { FindConditions, FindOneOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { DoctorsService } from './doctors.service';
 import { v4 } from 'uuid';
-
-interface GetDoctorsParams {
-  specialty: string;
-  district: string;
-  search: string;
-  page: string;
-  limit: string;
-  order: Order;
-  orderBy: DoctorField;
-}
 
 @Injectable()
 export class DoctorCommentsService {
@@ -45,7 +35,9 @@ export class DoctorCommentsService {
   async getCommentByDoctorIdOrFail({ id, commentId }: DoctorCommentParam) {
     const result = await this.getCommentByDoctorId({ id, commentId });
     if (!result.length) {
-      throw new NotFoundException(getResponseByErrorCode('CAROUSEL_NOT_FOUND'));
+      throw new NotFoundException(
+        getResponseByErrorCode('DOCTOR_COMMENT_NOT_FOUND'),
+      );
     }
     return result;
   }
@@ -54,12 +46,9 @@ export class DoctorCommentsService {
     doctorId: string,
     data: Pick<CommentType, 'title' | 'content' | 'rating' | 'patientUserId'>,
   ) {
-    const currentDoctor = await this.doctorsService.getDoctorOrFail({
+    await this.doctorsService.getDoctorOrFail({
       id: doctorId,
     });
-    if (!currentDoctor) {
-      throw new NotFoundException(getResponseByErrorCode('CAROUSEL_NOT_FOUND'));
-    }
     const result = await this.getCommentsByDoctorId(doctorId);
     await this.doctorsRepository.update(doctorId, {
       comments: [
@@ -73,11 +62,28 @@ export class DoctorCommentsService {
     });
   }
 
-  async updateComment(id: string, data: Partial<Doctor>) {
-    await this.doctorsRepository.update(id, data);
+  async updateComment(
+    { id, commentId }: DoctorCommentParam,
+    data: DoctorComment,
+  ) {
+    const currrentDoctorComments = await this.getCommentByDoctorIdOrFail({
+      id,
+      commentId,
+    });
+
+    await this.doctorsRepository.update(id, {
+      comments: [...currrentDoctorComments, { ...data }],
+    });
   }
 
-  async deleteDoctor(id: string) {
-    await this.doctorsRepository.softDelete(id);
+  async deleteDoctorComment({ id, commentId }: DoctorCommentParam) {
+    const currrentDoctorComments = await this.getCommentByDoctorIdOrFail({
+      id,
+      commentId,
+    });
+
+    await this.doctorsRepository.update(id, {
+      comments: currrentDoctorComments.filter(({ id }) => id !== commentId),
+    });
   }
 }

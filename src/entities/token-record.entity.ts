@@ -1,3 +1,4 @@
+import { TokenType, tokenTypes } from '@src/utils/auth';
 import {
   Entity,
   Column,
@@ -5,10 +6,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
 } from 'typeorm';
-
-type TokenType = typeof tokenTypes[number];
-
-const tokenTypes = ['REFRESH', 'RESET_PASSWORD'] as const;
 
 @Entity()
 export class TokenRecord {

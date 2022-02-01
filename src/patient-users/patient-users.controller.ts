@@ -14,7 +14,7 @@ import { PatientUsersService } from './patient-users.service';
 import { PatientUserDto } from './dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@Controller('carousels')
+@Controller('patient-users')
 export class PatientUsersController {
   constructor(private readonly patientUsersService: PatientUsersService) {}
 
@@ -62,7 +62,7 @@ export class PatientUsersController {
   }
 
   @Delete(':id')
-  async deleteCarousel(@Param('id') id: string) {
+  async deletePatientUser(@Param('id') id: string) {
     await this.patientUsersService.getPatientUserOrFail({ id });
     return this.patientUsersService.deletePatientUser(id);
   }

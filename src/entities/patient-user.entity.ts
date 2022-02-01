@@ -15,7 +15,7 @@ export class PatientUser {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ length: 254, unique: true })
   email: string;
 
   @Column()

@@ -1,4 +1,4 @@
-import { BilingualFormat } from '@src/types/common';
+import type { BilingualFormat } from '@src/types/common';
 import {
   Column,
   CreateDateColumn,

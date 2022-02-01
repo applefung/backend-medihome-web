@@ -6,12 +6,11 @@ import {
   Param,
   Patch,
   Post,
-  Query,
 } from '@nestjs/common';
 import { DoctorCommentsService } from '../services/doctor-comments.service';
-import { DoctorCommentDto, DoctorDto } from '../dtos';
-import { GetDoctorsDto } from '../dtos/get-doctors-dto';
-import { DoctorCommentParam } from '@src/types/doctor-comment';
+import { DoctorCommentDto } from '../dtos';
+import type { DoctorCommentParam } from '@src/types/doctor-comment';
+import { UpdateDoctorCommentDto } from '../dtos/update-doctor-comment.dto';
 
 @Controller('doctors')
 export class DoctorsController {
@@ -35,18 +34,13 @@ export class DoctorsController {
   @Patch(':id/comments/:commentId')
   async updateComment(
     @Param() { id, commentId }: DoctorCommentParam,
-    @Body() data: DoctorDto,
+    @Body() data: UpdateDoctorCommentDto,
   ) {
-    await this.doctorCommentsService.getCommentByDoctorIdOrFail({
-      id,
-      commentId,
-    });
-    return this.doctorCommentsService.updateComment(id, data);
+    await this.doctorCommentsService.updateComment({ id, commentId }, data);
   }
 
   @Delete(':id')
-  async deleteDoctor(@Param('id') id: string) {
-    // await this.doctorsService.getDoctorOrFail({ id });
-    // return this.doctorsService.deleteDoctor(id);
+  async deleteDoctor(@Param() { id, commentId }: DoctorCommentParam) {
+    await this.doctorCommentsService.deleteDoctorComment({ id, commentId });
   }
 }

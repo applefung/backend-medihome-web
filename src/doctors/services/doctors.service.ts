@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Doctor } from '@src/entities';
-import { OrderType } from '@src/types/common';
+import type { OrderType } from '@src/types/common';
 import { Order } from '@src/utils/common';
 import { DoctorField } from '@src/utils/doctor';
 import { getResponseByErrorCode } from '@src/utils/error';
@@ -75,7 +75,7 @@ export class DoctorsService {
   ) {
     const result = await this.doctorsRepository.findOne(conditions, options);
     if (!result) {
-      throw new NotFoundException(getResponseByErrorCode('CAROUSEL_NOT_FOUND'));
+      throw new NotFoundException(getResponseByErrorCode('DOCTOR_NOT_FOUND'));
     }
     return result;
   }
