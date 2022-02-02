@@ -6,3 +6,6 @@ export * from './patient-user.entity';
 export * from './token-record.entity';
 export * from './user-log.entity';
 export * from './article.entity';
+export * from './article-tag-map.entity';
+export * from './article-tag.entity';
+export * from './article-topic.entity';

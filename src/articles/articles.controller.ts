@@ -8,35 +8,36 @@ import {
   Post,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
+import { ArticleDto } from './dtos';
 
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Get()
-  getCarousels() {
-    return this.articlesService.getCarousels();
+  getArticles() {
+    return this.articlesService.getArticles({ relations: ['articleTopic'] });
   }
 
   @Get(':id')
-  getCarousel(@Param('id') id: string) {
-    return this.articlesService.getCarousel({ id });
+  getArticle(@Param('id') id: string) {
+    return this.articlesService.getArticle({ id });
   }
 
   @Post()
-  createCarousel(@Body() data: any) {
-    return this.articlesService.createCarousel(data);
+  createArticle(@Body() data: ArticleDto) {
+    return this.articlesService.createArticle(data);
   }
 
   @Patch(':id')
-  async updateCarousel(@Param('id') id: string, @Body() data: any) {
-    await this.articlesService.getCarouselOrFail({ id });
-    return this.articlesService.updateCarousel(id, data);
+  async updateArticle(@Param('id') id: string, @Body() data: ArticleDto) {
+    await this.articlesService.getArticleOrFail({ id });
+    return this.articlesService.updateArticle(id, data);
   }
 
-  @Delete(':id')
-  async deleteCarousel(@Param('id') id: string) {
-    await this.articlesService.getCarouselOrFail({ id });
-    return this.articlesService.deleteCarousel(id);
-  }
+  // @Delete(':id')
+  // async deletArticle(@Param('id') id: string) {
+  //   await this.articlesService.getArticleOrFail({ id });
+  //   return this.articlesService.deleteArticle(id);
+  // }
 }

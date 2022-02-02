@@ -9,7 +9,10 @@ export type ErrorCode =
   | 'CAROUSEL_NOT_FOUND'
   | 'SPECIALTY_NOT_FOUND'
   | 'DOCTOR_NOT_FOUND'
-  | 'DOCTOR_COMMENT_NOT_FOUND';
+  | 'DOCTOR_COMMENT_NOT_FOUND'
+  | 'ARTICLE_TOPIC_NOT_FOUND'
+  | 'ARTICLE_TAG_NOT_FOUND'
+  | 'ARTICLE_ID_IN_MAP_NOT_FOUND';
 
 // General Error 0XXXX
 // Auth Error 1XXXX
@@ -17,6 +20,7 @@ export type ErrorCode =
 // Specialty Error 3XXXX
 // Doctor Error 4XXXX
 // Doctor Comment Error 5XXXX
+// Article Error 6XXXX
 const errorMap = new Map<ErrorCode, ErrorResponse>([
   [
     'VALIDATION_ERROR',
@@ -79,6 +83,27 @@ const errorMap = new Map<ErrorCode, ErrorResponse>([
     {
       code: '50001',
       message: 'Doctor comment not found',
+    },
+  ],
+  [
+    'ARTICLE_TOPIC_NOT_FOUND',
+    {
+      code: '60001',
+      message: 'Article topic not found',
+    },
+  ],
+  [
+    'ARTICLE_TAG_NOT_FOUND',
+    {
+      code: '60002',
+      message: 'Article tag not found',
+    },
+  ],
+  [
+    'ARTICLE_ID_IN_MAP_NOT_FOUND',
+    {
+      code: '60003',
+      message: 'Article id in map not found',
     },
   ],
 ]);

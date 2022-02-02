@@ -10,8 +10,8 @@ export class SpecialtiesService {
     @InjectRepository(Specialty)
     private specialtiesRepository: Repository<Specialty>,
   ) {}
-  getSpecialties() {
-    return this.specialtiesRepository.find();
+  getSpecialties(options?: FindOneOptions<Specialty>) {
+    return this.specialtiesRepository.find(options);
   }
 
   getSpecialty(

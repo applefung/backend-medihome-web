@@ -10,8 +10,8 @@ export class CarouselsService {
     @InjectRepository(Carousel)
     private carouselsRepository: Repository<Carousel>,
   ) {}
-  getCarousels() {
-    return this.carouselsRepository.find();
+  getCarousels(options?: FindOneOptions<Carousel>) {
+    return this.carouselsRepository.find(options);
   }
 
   getCarousel(
