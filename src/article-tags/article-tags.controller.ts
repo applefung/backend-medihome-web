@@ -10,7 +10,7 @@ import {
 import { ArticleTagsService } from './article-tags.service';
 import { ArticleTagDto } from './dtos';
 
-@Controller('article-topics')
+@Controller('article-tags')
 export class ArticleTagsController {
   constructor(private readonly articleTagsService: ArticleTagsService) {}
 

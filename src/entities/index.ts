@@ -9,3 +9,4 @@ export * from './article.entity';
 export * from './article-tag-map.entity';
 export * from './article-tag.entity';
 export * from './article-topic.entity';
+export * from './doctor-user.entity';

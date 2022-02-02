@@ -49,7 +49,7 @@ export class ArticleTagsService {
   }
 
   async deleteArticleTag(id: string) {
-    await this.articleTagsRepository.softDelete(id);
+    await this.articleTagsRepository.delete(id);
   }
 
   async getArticleTagsByArticleId(id: string) {
