@@ -1,29 +1,25 @@
+import type { BilingualFormat } from '@src/types/common';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Doctor } from './doctor.entity';
+import { Region } from './region.entity';
 
 @Entity()
-export class DoctorUser {
+export class District {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 254, unique: true })
-  email: string;
+  @Column('json')
+  name: BilingualFormat;
 
-  @Column()
-  password: string;
-
-  @OneToOne(() => Doctor, { cascade: ['insert', 'update'] })
-  @JoinColumn()
-  doctor: Doctor;
+  @ManyToOne(() => Region)
+  region: Region;
 
   @CreateDateColumn()
   createdAt: Date;

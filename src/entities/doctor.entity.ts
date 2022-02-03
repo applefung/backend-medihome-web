@@ -7,9 +7,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { District } from '.';
 
 @Entity()
 export class Doctor {
@@ -39,6 +41,9 @@ export class Doctor {
 
   @Column({ type: 'json', nullable: true })
   comments: CommentType[];
+
+  @ManyToOne(() => District)
+  district: District;
 
   @CreateDateColumn()
   createdAt: Date;
