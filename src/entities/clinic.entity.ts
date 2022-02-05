@@ -23,10 +23,10 @@ export class Clinic {
   name: BilingualFormat;
 
   @Column('json')
-  address: MtrType;
+  address: BilingualFormat;
 
   @Column({ type: 'json', nullable: true })
-  mtr: BilingualFormat;
+  mtr: MtrType;
 
   @Column({ nullable: true })
   fee: string;

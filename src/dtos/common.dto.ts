@@ -1,4 +1,12 @@
-import { IsArray, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsDateString,
+  IsDefined,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
 export class BilingualDto {
   @IsString()
@@ -33,4 +41,74 @@ export class ContactsDto {
   @IsString({ each: true })
   @IsArray()
   whatsapp: string[];
+}
+
+export class MtrDto {
+  @IsString()
+  station: string;
+
+  @IsString()
+  exit: string;
+}
+
+class TimeslotDto {
+  @IsString()
+  fromTime: string;
+
+  @IsString()
+  toTime: string;
+}
+
+export class BusinessHoursDto {
+  @IsOptional()
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => TimeslotDto)
+  mon: TimeslotDto[];
+
+  @IsOptional()
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => TimeslotDto)
+  tue: TimeslotDto[];
+
+  @IsOptional()
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => TimeslotDto)
+  wed: TimeslotDto[];
+
+  @IsOptional()
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => TimeslotDto)
+  thu: TimeslotDto[];
+
+  @IsOptional()
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => TimeslotDto)
+  fri: TimeslotDto[];
+
+  @IsOptional()
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => TimeslotDto)
+  sat: TimeslotDto[];
+
+  @IsOptional()
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => TimeslotDto)
+  sun: TimeslotDto[];
+}
+
+export class ReservationTimeDto {
+  @IsDateString()
+  date: string;
+
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => TimeslotDto)
+  timeslots: TimeslotDto[];
 }

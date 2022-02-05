@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Carousel } from '@src/entities';
+import { Carousel, Clinic } from '@src/entities';
 import { getResponseByErrorCode } from '@src/utils/error';
 import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 
@@ -27,16 +27,16 @@ export class ClinicsService {
   ) {
     const result = await this.carouselsRepository.findOne(conditions, options);
     if (!result) {
-      throw new NotFoundException(getResponseByErrorCode('CAROUSEL_NOT_FOUND'));
+      throw new NotFoundException(getResponseByErrorCode('CLINIC_NOT_FOUND'));
     }
     return result;
   }
 
-  createClinic(data: Pick<Carousel, 'url'>) {
+  createClinic(data: Partial<Clinic>) {
     return this.carouselsRepository.save(data);
   }
 
-  async updateClinic(id: string, data: Pick<Carousel, 'url'>) {
+  async updateClinic(id: string, data: Partial<Clinic>) {
     await this.carouselsRepository.update(id, data);
   }
 
