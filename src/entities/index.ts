@@ -13,3 +13,4 @@ export * from './doctor-user.entity';
 export * from './clinic.entity';
 export * from './district.entity';
 export * from './region.entity';
+export * from './doctor-clinic-map.entity';

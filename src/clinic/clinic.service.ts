@@ -1,31 +1,33 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Carousel, Clinic } from '@src/entities';
+import { DoctorsService } from '@src/doctors/services/doctors.service';
+import { Clinic } from '@src/entities';
 import { getResponseByErrorCode } from '@src/utils/error';
 import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 
 @Injectable()
 export class ClinicsService {
   constructor(
-    @InjectRepository(Carousel)
-    private carouselsRepository: Repository<Carousel>,
+    @InjectRepository(Clinic)
+    private clinicsRepository: Repository<Clinic>,
+    private doctorsService: DoctorsService,
   ) {}
-  getClinics(options?: FindOneOptions<Carousel>) {
-    return this.carouselsRepository.find(options);
+  getClinics(options?: FindOneOptions<Clinic>) {
+    return this.clinicsRepository.find(options);
   }
 
   getClinic(
-    conditions: FindConditions<Carousel>,
-    options?: FindOneOptions<Carousel>,
+    conditions: FindConditions<Clinic>,
+    options?: FindOneOptions<Clinic>,
   ) {
-    return this.carouselsRepository.findOne(conditions, options);
+    return this.clinicsRepository.findOne(conditions, options);
   }
 
   async getClinicOrFail(
-    conditions: FindConditions<Carousel>,
-    options?: FindOneOptions<Carousel>,
+    conditions: FindConditions<Clinic>,
+    options?: FindOneOptions<Clinic>,
   ) {
-    const result = await this.carouselsRepository.findOne(conditions, options);
+    const result = await this.clinicsRepository.findOne(conditions, options);
     if (!result) {
       throw new NotFoundException(getResponseByErrorCode('CLINIC_NOT_FOUND'));
     }
@@ -33,14 +35,14 @@ export class ClinicsService {
   }
 
   createClinic(data: Partial<Clinic>) {
-    return this.carouselsRepository.save(data);
+    return this.clinicsRepository.save(data);
   }
 
   async updateClinic(id: string, data: Partial<Clinic>) {
-    await this.carouselsRepository.update(id, data);
+    await this.clinicsRepository.update(id, data);
   }
 
   async deleteClinic(id: string) {
-    await this.carouselsRepository.softDelete(id);
+    await this.clinicsRepository.softDelete(id);
   }
 }

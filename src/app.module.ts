@@ -7,6 +7,7 @@ import { ArticleTagsModule } from './article-tags/article-tags.module';
 import { ArticleTopicsModule } from './article-topics/article-topics.module';
 import { ArticlesModule } from './articles/articles.module';
 import { CarouselsModule } from './carousels/carousels.module';
+import { ClinicsModule } from './clinic/clinic.module';
 import { DoctorsModule } from './doctors/doctors.module';
 import { SpecialtyModule } from './specialties/specialties.module';
 
@@ -41,6 +42,7 @@ import { SpecialtyModule } from './specialties/specialties.module';
     CarouselsModule,
     SpecialtyModule,
     DoctorsModule,
+    ClinicsModule,
     ArticlesModule,
     ArticleTagsModule,
     ArticleTopicsModule,

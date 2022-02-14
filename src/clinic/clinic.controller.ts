@@ -20,6 +20,11 @@ export class ClinicsController {
     return this.clinicsService.getClinics();
   }
 
+  @Get('/doctors/:id')
+  getClinicsByDoctorId(@Param('id') id: string) {
+    return this.clinicsService.getClinic({ id });
+  }
+
   @Get(':id')
   getClinic(@Param('id') id: string) {
     return this.clinicsService.getClinic({ id });

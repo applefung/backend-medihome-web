@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Doctor } from '@src/entities';
+import { Doctor, DoctorClinicMap } from '@src/entities';
 import type { OrderType } from '@src/types/common';
 import { Order } from '@src/utils/common';
 import { DoctorField } from '@src/utils/doctor';
@@ -22,8 +22,10 @@ export class DoctorsService {
   constructor(
     @InjectRepository(Doctor)
     private doctorsRepository: Repository<Doctor>,
+    @InjectRepository(DoctorClinicMap)
+    private doctorClinicMapRepository: Repository<DoctorClinicMap>,
   ) {}
-  getDoctors({
+  async getDoctors({
     specialty,
     district,
     search,
@@ -53,13 +55,25 @@ export class DoctorsService {
         THEN (CAST("hospitalAffiliations"->'tc' AS varchar) ilike '%${search}%' or CAST("hospitalAffiliations"->'en' AS varchar) ilike '%${search}%') END)`;
     }
 
-    return this.doctorsRepository
+    const result = await this.doctorsRepository
       .createQueryBuilder()
       .where(whereOptions)
       .take(take)
       .skip(skip)
       .orderBy(orderBy, order as OrderType)
-      .getManyAndCount();
+      .getMany();
+
+    const data = Promise.all(
+      result.map(async (item: Doctor) => ({
+        ...item,
+        clinics: await this.getClinicsByDoctorId(item.id),
+      })),
+    );
+
+    return {
+      data,
+      count: result.length,
+    };
   }
 
   getDoctor(
@@ -67,6 +81,11 @@ export class DoctorsService {
     options?: FindOneOptions<Doctor>,
   ) {
     return this.doctorsRepository.findOne(conditions, options);
+  }
+
+  async getClinicsByDoctorId(id: string) {
+    const doctor = await this.getDoctor({ id });
+    return this.doctorClinicMapRepository.find({ doctor });
   }
 
   async getDoctorOrFail(
