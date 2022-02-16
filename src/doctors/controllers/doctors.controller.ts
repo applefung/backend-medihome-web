@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { DoctorsService } from '../services/doctors.service';
 import { DoctorDto, GetDoctorsDto } from '../dtos';
+import { formatReservationTime } from '@src/utils/clinic';
 
 @Controller('doctors')
 export class DoctorsController {
@@ -29,14 +30,29 @@ export class DoctorsController {
   }
 
   @Post()
-  createDoctor(@Body() data: DoctorDto) {
-    return this.doctorsService.createDoctor(data);
+  createDoctor(@Body() { clinics, ...data }: DoctorDto) {
+    return this.doctorsService.createDoctor({
+      ...data,
+      clinics: clinics.map(({ reservationTime, ...item }) => ({
+        ...item,
+        reservationTime: formatReservationTime(reservationTime),
+      })),
+    });
   }
 
   @Patch(':id')
-  async updateDoctor(@Param('id') id: string, @Body() data: DoctorDto) {
+  async updateDoctor(
+    @Param('id') id: string,
+    @Body() { clinics, ...data }: DoctorDto,
+  ) {
     await this.doctorsService.getDoctorOrFail({ id });
-    return this.doctorsService.updateDoctor(id, data);
+    return this.doctorsService.updateDoctor(id, {
+      ...data,
+      clinics: clinics.map(({ reservationTime, ...item }) => ({
+        ...item,
+        reservationTime: formatReservationTime(reservationTime),
+      })),
+    });
   }
 
   @Delete(':id')

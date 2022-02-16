@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DoctorsService } from '@src/doctors/services/doctors.service';
 import { Clinic } from '@src/entities';
 import { getResponseByErrorCode } from '@src/utils/error';
 import { FindConditions, FindOneOptions, Repository } from 'typeorm';
@@ -10,7 +9,6 @@ export class ClinicsService {
   constructor(
     @InjectRepository(Clinic)
     private clinicsRepository: Repository<Clinic>,
-    private doctorsService: DoctorsService,
   ) {}
   getClinics(options?: FindOneOptions<Clinic>) {
     return this.clinicsRepository.find(options);

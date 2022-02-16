@@ -1,4 +1,5 @@
 import {
+  AddressDto,
   BilingualDto,
   BusinessHoursDto,
   ContactsDto,
@@ -23,8 +24,8 @@ export class UpdateClinicDto {
   @IsOptional()
   @IsDefined()
   @ValidateNested()
-  @Type(() => BilingualDto)
-  address: BilingualDto;
+  @Type(() => AddressDto)
+  address: AddressDto;
 
   @IsOptional()
   @IsDefined()

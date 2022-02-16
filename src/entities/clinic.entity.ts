@@ -1,5 +1,6 @@
 import { ReservationTime } from '@src/types/clinic';
 import type {
+  AddressFormat,
   BilingualFormat,
   BusinessHours,
   MtrType,
@@ -23,7 +24,7 @@ export class Clinic {
   name: BilingualFormat;
 
   @Column('json')
-  address: BilingualFormat;
+  address: AddressFormat;
 
   @Column({ type: 'json', nullable: true })
   mtr: MtrType;

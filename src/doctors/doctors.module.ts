@@ -20,7 +20,7 @@ import { DoctorsService } from './services/doctors.service';
       DoctorClinicMap,
       Clinic,
     ]),
-    // ClinicsModule,
+    ClinicsModule,
   ],
   controllers: [DoctorsController],
   providers: [DoctorsService],

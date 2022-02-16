@@ -23,3 +23,8 @@ export interface Timeslot {
 export type BusinessHours = Partial<
   Record<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun', Timeslot[]>
 >;
+
+export interface AddressFormat extends BilingualFormat {
+  latitude: string;
+  longitude: string;
+}

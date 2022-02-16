@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Doctor, DoctorClinicMap } from '@src/entities';
+import { ClinicsService } from '@src/clinic/clinic.service';
+import { Clinic, Doctor, DoctorClinicMap } from '@src/entities';
 import type { OrderType } from '@src/types/common';
 import { Order } from '@src/utils/common';
 import { DoctorField } from '@src/utils/doctor';
@@ -17,6 +18,7 @@ interface GetDoctorsParams {
   orderBy: DoctorField;
 }
 
+type DoctorParams = Partial<Doctor> & Record<'clinics', Partial<Clinic>[]>;
 @Injectable()
 export class DoctorsService {
   constructor(
@@ -24,6 +26,7 @@ export class DoctorsService {
     private doctorsRepository: Repository<Doctor>,
     @InjectRepository(DoctorClinicMap)
     private doctorClinicMapRepository: Repository<DoctorClinicMap>,
+    private clinicsService: ClinicsService,
   ) {}
   async getDoctors({
     specialty,
@@ -63,7 +66,7 @@ export class DoctorsService {
       .orderBy(orderBy, order as OrderType)
       .getMany();
 
-    const data = Promise.all(
+    const data = await Promise.all(
       result.map(async (item: Doctor) => ({
         ...item,
         clinics: await this.getClinicsByDoctorId(item.id),
@@ -99,11 +102,29 @@ export class DoctorsService {
     return result;
   }
 
-  createDoctor(data: Partial<Doctor>) {
-    return this.doctorsRepository.save(data);
+  async createDoctor({ clinics, ...data }: DoctorParams) {
+    const doctor = await this.doctorsRepository.save(data);
+    await Promise.all(
+      clinics.map(async (item) => {
+        const clinic = await this.clinicsService.createClinic(item);
+        await this.createDoctorClinicMap({
+          clinicId: clinic.id,
+          doctorId: doctor.id,
+        });
+      }),
+    );
   }
 
-  async updateDoctor(id: string, data: Partial<Doctor>) {
+  async createDoctorClinicMap({
+    clinicId,
+    doctorId,
+  }: Record<'clinicId' | 'doctorId', string>) {
+    const clinic = await this.clinicsService.getClinicOrFail({ id: clinicId });
+    const doctor = await this.getDoctorOrFail({ id: doctorId });
+    return this.doctorClinicMapRepository.create({ clinic, doctor });
+  }
+
+  async updateDoctor(id: string, data: DoctorParams) {
     await this.doctorsRepository.update(id, data);
   }
 

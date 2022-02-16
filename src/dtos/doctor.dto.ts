@@ -1,8 +1,15 @@
 import { Type } from 'class-transformer';
-import { IsIn, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+  IsDefined,
+  IsIn,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { BilingualArrayDto, BilingualDto, ContactsDto } from '@src/dtos';
 import { languages } from '@src/utils/doctor';
 import { Gender, genders } from '@src/utils/common';
+import { CreateClinicDto } from '@src/clinic/dtos';
 
 export class DoctorDto {
   @ValidateNested()
@@ -36,4 +43,9 @@ export class DoctorDto {
   @ValidateNested()
   @Type(() => BilingualArrayDto)
   hospitalAffiliations: BilingualArrayDto;
+
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => CreateClinicDto)
+  clinics: CreateClinicDto[];
 }

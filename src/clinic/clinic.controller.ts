@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { formatReservationTime } from '@src/utils/clinic';
 import dayjs from 'dayjs';
 import { ClinicsService } from './clinic.service';
 import { CreateClinicDto, UpdateClinicDto } from './dtos';
@@ -33,10 +34,7 @@ export class ClinicsController {
   @Post()
   createClinic(@Body() { reservationTime, ...data }: CreateClinicDto) {
     return this.clinicsService.createClinic({
-      reservationTime: reservationTime.map(({ date, timeslots }) => ({
-        date: dayjs(date).toDate(),
-        timeslots,
-      })),
+      reservationTime: formatReservationTime(reservationTime),
       ...data,
     });
   }
@@ -48,10 +46,7 @@ export class ClinicsController {
   ) {
     await this.clinicsService.getClinicOrFail({ id });
     return this.clinicsService.updateClinic(id, {
-      reservationTime: reservationTime.map(({ date, timeslots }) => ({
-        date: dayjs(date).toDate(),
-        timeslots,
-      })),
+      reservationTime: formatReservationTime(reservationTime),
       ...data,
     });
   }

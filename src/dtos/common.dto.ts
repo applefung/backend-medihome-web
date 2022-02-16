@@ -3,6 +3,7 @@ import {
   IsArray,
   IsDateString,
   IsDefined,
+  IsNumberString,
   IsOptional,
   IsString,
   ValidateNested,
@@ -111,4 +112,12 @@ export class ReservationTimeDto {
   @ValidateNested()
   @Type(() => TimeslotDto)
   timeslots: TimeslotDto[];
+}
+
+export class AddressDto extends BilingualDto {
+  @IsNumberString()
+  latitude: string;
+
+  @IsNumberString()
+  longitude: string;
 }
