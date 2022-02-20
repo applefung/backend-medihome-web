@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Gender, genders } from '@src/utils/common';
+import { GenderLowerCase, gendersLowerCase } from '@src/utils/common';
 
 export class PatientUserDto {
   @IsEmail()
@@ -17,8 +17,8 @@ export class PatientUserDto {
 
   @IsOptional()
   @IsString()
-  @IsIn(genders)
-  gender: Gender;
+  @IsIn(gendersLowerCase)
+  gender: GenderLowerCase;
 
   @IsOptional()
   @IsDateString()

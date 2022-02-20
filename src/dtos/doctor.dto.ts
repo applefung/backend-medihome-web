@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { BilingualArrayDto, BilingualDto, ContactsDto } from '@src/dtos';
 import { languages } from '@src/utils/doctor';
-import { Gender, genders } from '@src/utils/common';
+import { GenderLowerCase, gendersLowerCase } from '@src/utils/common';
 import { CreateClinicDto } from '@src/clinic/dtos';
 
 export class DoctorDto {
@@ -17,8 +17,8 @@ export class DoctorDto {
   name: BilingualDto;
 
   @IsString()
-  @IsIn(genders)
-  gender: Gender;
+  @IsIn(gendersLowerCase)
+  gender: GenderLowerCase;
 
   @IsOptional()
   @IsString({ each: true })

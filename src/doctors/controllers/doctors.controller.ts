@@ -30,12 +30,15 @@ export class DoctorsController {
   }
 
   @Post()
-  createDoctor(@Body() { clinics, ...data }: DoctorDto) {
+  createDoctor(@Body() { clinics, gender, ...data }: DoctorDto) {
     return this.doctorsService.createDoctor({
       ...data,
+      gender: gender.toUpperCase(),
       clinics: clinics.map(({ reservationTime, ...item }) => ({
         ...item,
-        reservationTime: formatReservationTime(reservationTime),
+        ...(reservationTime && {
+          reservationTime: formatReservationTime(reservationTime),
+        }),
       })),
     });
   }
@@ -43,14 +46,17 @@ export class DoctorsController {
   @Patch(':id')
   async updateDoctor(
     @Param('id') id: string,
-    @Body() { clinics, ...data }: DoctorDto,
+    @Body() { clinics, gender, ...data }: DoctorDto,
   ) {
     await this.doctorsService.getDoctorOrFail({ id });
     return this.doctorsService.updateDoctor(id, {
       ...data,
+      gender: gender.toUpperCase(),
       clinics: clinics.map(({ reservationTime, ...item }) => ({
         ...item,
-        reservationTime: formatReservationTime(reservationTime),
+        ...(reservationTime && {
+          reservationTime: formatReservationTime(reservationTime),
+        }),
       })),
     });
   }
