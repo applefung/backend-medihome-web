@@ -7,11 +7,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { District } from '.';
+import { Clinic, District } from '.';
 
 @Entity()
 export class Doctor {
@@ -44,6 +46,10 @@ export class Doctor {
 
   @ManyToOne(() => District)
   district: District;
+
+  @ManyToMany(() => Clinic, (clinic) => clinic.doctors)
+  @JoinTable()
+  clinics: Clinic[];
 
   @CreateDateColumn()
   createdAt: Date;

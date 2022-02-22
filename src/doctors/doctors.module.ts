@@ -13,13 +13,7 @@ import { DoctorsService } from './services/doctors.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      Doctor,
-      District,
-      Region,
-      DoctorClinicMap,
-      Clinic,
-    ]),
+    TypeOrmModule.forFeature([Doctor, District, Region, Clinic]),
     ClinicsModule,
   ],
   controllers: [DoctorsController],

@@ -11,9 +11,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Doctor } from './doctor.entity';
 
 @Entity()
 export class Clinic {
@@ -40,6 +42,9 @@ export class Clinic {
 
   @Column({ type: 'json', nullable: true })
   reservationTime: ReservationTime[];
+
+  @ManyToMany(() => Doctor, (doctor) => doctor.clinics)
+  doctors: Doctor[];
 
   @CreateDateColumn()
   createdAt: Date;

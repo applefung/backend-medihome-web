@@ -36,6 +36,10 @@ export class ClinicsService {
     return this.clinicsRepository.save(data);
   }
 
+  createClinicData(data: Partial<Clinic>) {
+    return this.clinicsRepository.create(data);
+  }
+
   async updateClinic(id: string, data: Partial<Clinic>) {
     await this.clinicsRepository.update(id, data);
   }
