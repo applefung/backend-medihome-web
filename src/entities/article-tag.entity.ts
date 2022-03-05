@@ -4,9 +4,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Article } from '.';
 
 @Entity()
 export class ArticleTag {
@@ -16,9 +18,15 @@ export class ArticleTag {
   @Column('json')
   title: BilingualFormat;
 
+  @ManyToMany(() => Article, (article) => article.articleTags)
+  articles: Article[];
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }

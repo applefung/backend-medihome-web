@@ -35,9 +35,9 @@ export class ArticlesController {
     return this.articlesService.updateArticle(id, data);
   }
 
-  // @Delete(':id')
-  // async deletArticle(@Param('id') id: string) {
-  //   await this.articlesService.getArticleOrFail({ id });
-  //   return this.articlesService.deleteArticle(id);
-  // }
+  @Delete(':id')
+  async deletArticle(@Param('id') id: string) {
+    await this.articlesService.getArticleOrFail({ id });
+    return this.articlesService.deleteArticle(id);
+  }
 }

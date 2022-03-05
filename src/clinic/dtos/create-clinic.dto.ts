@@ -15,6 +15,10 @@ import {
 } from 'class-validator';
 
 export class CreateClinicDto {
+  @IsOptional()
+  @IsString()
+  id: string;
+
   @IsDefined()
   @ValidateNested()
   @Type(() => BilingualDto)

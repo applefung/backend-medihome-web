@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ArticleTag, ArticleTagMap } from '@src/entities';
+import { ArticleTag } from '@src/entities';
 import { getResponseByErrorCode } from '@src/utils/error';
 import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 
@@ -9,8 +9,6 @@ export class ArticleTagsService {
   constructor(
     @InjectRepository(ArticleTag)
     private articleTagsRepository: Repository<ArticleTag>,
-    @InjectRepository(ArticleTagMap)
-    private articleTagMapsRepository: Repository<ArticleTagMap>,
   ) {}
 
   getArticleTags(options?: FindOneOptions<ArticleTag>) {
@@ -50,15 +48,5 @@ export class ArticleTagsService {
 
   async deleteArticleTag(id: string) {
     await this.articleTagsRepository.delete(id);
-  }
-
-  async getArticleTagsByArticleId(id: string) {
-    const result = await this.articleTagMapsRepository.find({ id });
-    if (!result) {
-      throw new NotFoundException(
-        getResponseByErrorCode('ARTICLE_TAG_NOT_FOUND'),
-      );
-    }
-    return result;
   }
 }

@@ -100,11 +100,30 @@ export class DoctorsService {
   }
 
   async createDoctor({ clinics, ...data }: Partial<DoctorProps>) {
+    // handle if clinic exist
+    const currentClinicIds = clinics
+      .filter(({ id }) => !!id)
+      .map(({ id }) => id);
+    const currentClinics = await Promise.all(
+      currentClinicIds.map(
+        async (item) => await this.clinicsService.getClinic({ id: item }),
+      ),
+    );
+
+    const newClinics = clinics.filter(
+      ({ id }) => !currentClinicIds.includes(id),
+    );
+
+    const createdClinics = await Promise.all(
+      newClinics.map(
+        async (item) => await this.clinicsService.createClinic(item),
+      ),
+    );
+    console.log('currentClinics', currentClinics);
+    console.log('createdClinics', createdClinics);
     await this.doctorsRepository.save({
       ...data,
-      clinics: clinics.map((item) =>
-        this.clinicsService.createClinicData(item),
-      ),
+      clinics: [...currentClinics, ...createdClinics].flat(),
     });
   }
 
