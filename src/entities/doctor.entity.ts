@@ -7,6 +7,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -14,6 +15,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Clinic, District } from '.';
+import { Specialty } from './specialty.entity';
 
 @Entity()
 export class Doctor {
@@ -44,8 +46,8 @@ export class Doctor {
   @Column({ type: 'json', nullable: true })
   comments: CommentType[];
 
-  @ManyToOne(() => District)
-  district: District;
+  @ManyToOne(() => Specialty, (specialty) => specialty.doctors)
+  specialty: Specialty;
 
   @ManyToMany(() => Clinic, (clinic) => clinic.doctors)
   @JoinTable()

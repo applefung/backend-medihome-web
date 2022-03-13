@@ -8,5 +8,6 @@ import { SpecialtiesService } from './specialties.service';
   imports: [TypeOrmModule.forFeature([Specialty])],
   controllers: [SpecialtiesController],
   providers: [SpecialtiesService],
+  exports: [SpecialtiesService],
 })
 export class SpecialtyModule {}

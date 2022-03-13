@@ -44,6 +44,9 @@ export class DoctorDto {
   @Type(() => BilingualArrayDto)
   hospitalAffiliations: BilingualArrayDto;
 
+  @IsString()
+  specialtyId: string;
+
   @IsDefined()
   @ValidateNested()
   @Type(() => CreateClinicDto)

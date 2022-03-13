@@ -4,9 +4,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Doctor } from './doctor.entity';
 
 @Entity()
 export class Specialty {
@@ -15,6 +17,9 @@ export class Specialty {
 
   @Column('json')
   name: BilingualFormat;
+
+  @OneToMany(() => Doctor, (doctor) => doctor.specialty)
+  doctors: Doctor;
 
   @CreateDateColumn()
   createdAt: Date;

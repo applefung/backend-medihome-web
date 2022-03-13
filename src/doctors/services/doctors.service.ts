@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClinicsService } from '@src/clinic/clinic.service';
 import { Clinic, Doctor } from '@src/entities';
+import { SpecialtiesService } from '@src/specialties/specialties.service';
 import type { OrderType } from '@src/types/common';
 import { Order } from '@src/utils/common';
 import { DoctorField } from '@src/utils/doctor';
@@ -20,6 +21,7 @@ interface GetDoctorsParams {
 
 interface DoctorProps extends Omit<Doctor, 'clinics'> {
   clinics: Partial<Clinic>[];
+  specialtyId: string;
 }
 
 @Injectable()
@@ -28,6 +30,7 @@ export class DoctorsService {
     @InjectRepository(Doctor)
     private doctorsRepository: Repository<Doctor>,
     private clinicsService: ClinicsService,
+    private specialtiesService: SpecialtiesService,
   ) {}
   async getDoctors({
     specialty,
@@ -50,18 +53,19 @@ export class DoctorsService {
       whereOptions = `${whereOptions}district: ${district},`;
     }
     if (search) {
-      whereOptions = `${whereOptions}CAST(name->'tc' AS varchar) ilike '%${search}%' or CAST(name->'en' AS varchar) ilike '%${search}%' 
+      whereOptions = `${whereOptions}CAST(doctor.name->'tc' AS varchar) ilike '%${search}%' or CAST(doctor.name->'en' AS varchar) ilike '%${search}%' 
       or (CASE 
-        WHEN "qualifications" IS NOT NULL  
-        THEN (CAST("qualifications"->'tc' AS varchar) ilike '%${search}%' or CAST("qualifications"->'en' AS varchar) ilike '%${search}%') END) 
+        WHEN doctor."qualifications" IS NOT NULL  
+        THEN (CAST(doctor."qualifications"->'tc' AS varchar) ilike '%${search}%' or CAST(doctor."qualifications"->'en' AS varchar) ilike '%${search}%') END) 
       or (CASE 
-        WHEN "hospitalAffiliations" IS NOT NULL 
-        THEN (CAST("hospitalAffiliations"->'tc' AS varchar) ilike '%${search}%' or CAST("hospitalAffiliations"->'en' AS varchar) ilike '%${search}%') END)`;
+        WHEN doctor."hospitalAffiliations" IS NOT NULL 
+        THEN (CAST(doctor."hospitalAffiliations"->'tc' AS varchar) ilike '%${search}%' or CAST(doctor."hospitalAffiliations"->'en' AS varchar) ilike '%${search}%') END)`;
     }
 
     const result = await this.doctorsRepository
       .createQueryBuilder('doctor')
       // .innerJoin('doctor.clinics', 'clinics')
+      .leftJoinAndSelect('doctor.specialty', 'specialty')
       .where(whereOptions)
       .take(take)
       .skip(skip)
@@ -99,11 +103,15 @@ export class DoctorsService {
     return result;
   }
 
-  async createDoctor({ clinics, ...data }: Partial<DoctorProps>) {
-    // handle if clinic exist
+  async createDoctor({ clinics, specialtyId, ...data }: Partial<DoctorProps>) {
+    const specialty = await this.specialtiesService.getSpecialtyOrFail({
+      id: specialtyId,
+    });
+
     const currentClinicIds = clinics
       .filter(({ id }) => !!id)
       .map(({ id }) => id);
+
     const currentClinics = await Promise.all(
       currentClinicIds.map(
         async (item) => await this.clinicsService.getClinic({ id: item }),
@@ -119,10 +127,10 @@ export class DoctorsService {
         async (item) => await this.clinicsService.createClinic(item),
       ),
     );
-    console.log('currentClinics', currentClinics);
-    console.log('createdClinics', createdClinics);
+
     await this.doctorsRepository.save({
       ...data,
+      specialty,
       clinics: [...currentClinics, ...createdClinics].flat(),
     });
   }
