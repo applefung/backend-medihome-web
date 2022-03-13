@@ -7,6 +7,6 @@ export class AppController {
 
   @Get()
   checkAlive(): string {
-    return 'OK';
+    return 'OK,';
   }
 }
