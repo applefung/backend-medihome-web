@@ -39,7 +39,7 @@ export class DoctorsService {
     page = '1',
     limit = '5',
     order = 'DESC',
-    orderBy = 'id',
+    orderBy = 'doctor.id',
   }: GetDoctorsParams) {
     // limit
     const take = parseInt(limit);
