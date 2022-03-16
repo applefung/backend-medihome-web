@@ -5,9 +5,11 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Clinic } from './clinic.entity';
 import { Region } from './region.entity';
 
 @Entity()
@@ -20,6 +22,9 @@ export class District {
 
   @ManyToOne(() => Region)
   region: Region;
+
+  @OneToMany(() => Clinic, (clinic) => clinic.district)
+  clinics: Clinic[];
 
   @CreateDateColumn()
   createdAt: Date;

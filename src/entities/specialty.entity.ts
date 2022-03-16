@@ -19,7 +19,7 @@ export class Specialty {
   name: BilingualFormat;
 
   @OneToMany(() => Doctor, (doctor) => doctor.specialty)
-  doctors: Doctor;
+  doctors: Doctor[];
 
   @CreateDateColumn()
   createdAt: Date;

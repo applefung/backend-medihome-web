@@ -4,9 +4,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { District } from './district.entity';
 
 @Entity()
 export class Region {
@@ -15,6 +17,9 @@ export class Region {
 
   @Column('json')
   name: BilingualFormat;
+
+  @OneToMany(() => District, (district) => district.region)
+  districts: District[];
 
   @CreateDateColumn()
   createdAt: Date;

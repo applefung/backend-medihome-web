@@ -13,7 +13,9 @@ export type ErrorCode =
   | 'ARTICLE_TOPIC_NOT_FOUND'
   | 'ARTICLE_TAG_NOT_FOUND'
   | 'ARTICLE_ID_IN_MAP_NOT_FOUND'
-  | 'CLINIC_NOT_FOUND';
+  | 'CLINIC_NOT_FOUND'
+  | 'DISTRICT_NOT_FOUND'
+  | 'REGION_NOT_FOUND';
 
 // General Error 0XXXX
 // Auth Error 1XXXX
@@ -23,6 +25,7 @@ export type ErrorCode =
 // Doctor Comment Error 5XXXX
 // Article Error 6XXXX
 // Clinic Error 7XXXX
+// District and Region Error 8XXXX
 const errorMap = new Map<ErrorCode, ErrorResponse>([
   [
     'VALIDATION_ERROR',
@@ -113,6 +116,20 @@ const errorMap = new Map<ErrorCode, ErrorResponse>([
     {
       code: '70001',
       message: 'Clinic not found',
+    },
+  ],
+  [
+    'DISTRICT_NOT_FOUND',
+    {
+      code: '80001',
+      message: 'District not found',
+    },
+  ],
+  [
+    'REGION_NOT_FOUND',
+    {
+      code: '80002',
+      message: 'Region not found',
     },
   ],
 ]);

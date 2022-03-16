@@ -4,6 +4,7 @@ import {
   IsIn,
   IsOptional,
   IsString,
+  IsUUID,
   ValidateNested,
 } from 'class-validator';
 import { BilingualArrayDto, BilingualDto, ContactsDto } from '@src/dtos';
@@ -44,7 +45,7 @@ export class DoctorDto {
   @Type(() => BilingualArrayDto)
   hospitalAffiliations: BilingualArrayDto;
 
-  @IsString()
+  @IsUUID()
   specialtyId: string;
 
   @IsDefined()

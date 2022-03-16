@@ -9,7 +9,7 @@ import { ArticlesModule } from './articles/articles.module';
 import { CarouselsModule } from './carousels/carousels.module';
 import { ClinicsModule } from './clinic/clinic.module';
 import { DoctorsModule } from './doctors/doctors.module';
-import { SpecialtyModule } from './specialties/specialties.module';
+import { SpecialtiesModule } from './specialties/specialties.module';
 
 @Module({
   imports: [
@@ -40,7 +40,7 @@ import { SpecialtyModule } from './specialties/specialties.module';
       inject: [ConfigService],
     }),
     CarouselsModule,
-    SpecialtyModule,
+    SpecialtiesModule,
     DoctorsModule,
     ClinicsModule,
     ArticlesModule,

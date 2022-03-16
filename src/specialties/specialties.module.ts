@@ -10,4 +10,4 @@ import { SpecialtiesService } from './specialties.service';
   providers: [SpecialtiesService],
   exports: [SpecialtiesService],
 })
-export class SpecialtyModule {}
+export class SpecialtiesModule {}

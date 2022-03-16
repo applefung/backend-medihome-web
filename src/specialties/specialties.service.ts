@@ -30,7 +30,9 @@ export class SpecialtiesService {
       options,
     );
     if (!result) {
-      throw new NotFoundException(getResponseByErrorCode('CAROUSEL_NOT_FOUND'));
+      throw new NotFoundException(
+        getResponseByErrorCode('SPECIALTY_NOT_FOUND'),
+      );
     }
     return result;
   }

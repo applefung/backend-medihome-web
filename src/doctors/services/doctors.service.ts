@@ -66,6 +66,7 @@ export class DoctorsService {
       .createQueryBuilder('doctor')
       // .innerJoin('doctor.clinics', 'clinics')
       .leftJoinAndSelect('doctor.specialty', 'specialty')
+      .leftJoinAndSelect('doctor.clinics', 'clinic')
       .where(whereOptions)
       .take(take)
       .skip(skip)
