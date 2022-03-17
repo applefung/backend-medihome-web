@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DistrictsService } from '@src/districts/districts.service';
 import { Clinic } from '@src/entities';
+import { CreateClinicProps } from '@src/types/clinic';
 import { getResponseByErrorCode } from '@src/utils/error';
 import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 
@@ -9,6 +11,7 @@ export class ClinicsService {
   constructor(
     @InjectRepository(Clinic)
     private clinicsRepository: Repository<Clinic>,
+    private districtsService: DistrictsService,
   ) {}
   getClinics(options?: FindOneOptions<Clinic>) {
     return this.clinicsRepository.find(options);
@@ -32,8 +35,15 @@ export class ClinicsService {
     return result;
   }
 
-  createClinic(data: Partial<Clinic>) {
-    return this.clinicsRepository.save(data);
+  async createClinic({ districtId, ...data }: CreateClinicProps) {
+    console.log('districtId', districtId);
+    const district = await this.districtsService.getDistrictOrFail({
+      id: districtId,
+    });
+    return this.clinicsRepository.save({
+      ...data,
+      district,
+    });
   }
 
   async updateClinic(id: string, data: Partial<Clinic>) {

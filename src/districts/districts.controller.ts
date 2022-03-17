@@ -21,7 +21,7 @@ export class DistrictsController {
 
   @Get(':id')
   getDistrict(@Param('id') id: string) {
-    return this.districtsService.gettDistrict({ id });
+    return this.districtsService.getDistrict({ id });
   }
 
   @Post()
@@ -31,13 +31,13 @@ export class DistrictsController {
 
   @Patch(':id')
   async updateDistrict(@Param('id') id: string, @Body() data: DistrictDto) {
-    await this.districtsService.gettDistrictOrFail({ id });
-    return this.districtsService.updatetDistrict(id, data);
+    await this.districtsService.getDistrictOrFail({ id });
+    return this.districtsService.updateDistrict(id, data);
   }
 
   @Delete(':id')
   async deleteDistrict(@Param('id') id: string) {
-    await this.districtsService.gettDistrictOrFail({ id });
-    return this.districtsService.deletetDistrict(id);
+    await this.districtsService.getDistrictOrFail({ id });
+    return this.districtsService.deleteDistrict(id);
   }
 }

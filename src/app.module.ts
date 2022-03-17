@@ -8,7 +8,9 @@ import { ArticleTopicsModule } from './article-topics/article-topics.module';
 import { ArticlesModule } from './articles/articles.module';
 import { CarouselsModule } from './carousels/carousels.module';
 import { ClinicsModule } from './clinic/clinic.module';
+import { DistrictsModule } from './districts/districts.module';
 import { DoctorsModule } from './doctors/doctors.module';
+import { RegionsModule } from './regions/regions.module';
 import { SpecialtiesModule } from './specialties/specialties.module';
 
 @Module({
@@ -46,6 +48,8 @@ import { SpecialtiesModule } from './specialties/specialties.module';
     ArticlesModule,
     ArticleTagsModule,
     ArticleTopicsModule,
+    DistrictsModule,
+    RegionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

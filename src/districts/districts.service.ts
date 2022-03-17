@@ -16,14 +16,14 @@ export class DistrictsService {
     return this.districtsRepository.find(options);
   }
 
-  gettDistrict(
+  getDistrict(
     conditions: FindConditions<District>,
     options?: FindOneOptions<District>,
   ) {
     return this.districtsRepository.findOne(conditions, options);
   }
 
-  async gettDistrictOrFail(
+  async getDistrictOrFail(
     conditions: FindConditions<District>,
     options?: FindOneOptions<District>,
   ) {
@@ -45,11 +45,11 @@ export class DistrictsService {
     });
   }
 
-  async updatetDistrict(id: string, data: Pick<District, 'name'>) {
+  async updateDistrict(id: string, data: Pick<District, 'name'>) {
     await this.districtsRepository.update(id, data);
   }
 
-  async deletetDistrict(id: string) {
+  async deleteDistrict(id: string) {
     await this.districtsRepository.softDelete(id);
   }
 }

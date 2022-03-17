@@ -11,6 +11,7 @@ import {
   IsDefined,
   IsOptional,
   IsString,
+  IsUUID,
   ValidateNested,
 } from 'class-validator';
 
@@ -54,4 +55,7 @@ export class CreateClinicDto {
   @ValidateNested()
   @Type(() => ReservationTimeDto)
   reservationTime: ReservationTimeDto[];
+
+  @IsUUID()
+  districtId: string;
 }

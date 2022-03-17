@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ClinicsService } from '@src/clinic/clinic.service';
 import { Clinic, Doctor } from '@src/entities';
 import { SpecialtiesService } from '@src/specialties/specialties.service';
+import { CreateClinicProps } from '@src/types/clinic';
 import type { OrderType } from '@src/types/common';
 import { Order } from '@src/utils/common';
 import { DoctorField } from '@src/utils/doctor';
@@ -20,7 +21,7 @@ interface GetDoctorsParams {
 }
 
 interface DoctorProps extends Omit<Doctor, 'clinics'> {
-  clinics: Partial<Clinic>[];
+  clinics: CreateClinicProps;
   specialtyId: string;
 }
 
@@ -118,6 +119,10 @@ export class DoctorsService {
         async (item) => await this.clinicsService.getClinic({ id: item }),
       ),
     );
+
+    if (currentClinics.includes(undefined)) {
+      throw new NotFoundException(getResponseByErrorCode('CLINIC_NOT_FOUND'));
+    }
 
     const newClinics = clinics.filter(
       ({ id }) => !currentClinicIds.includes(id),
