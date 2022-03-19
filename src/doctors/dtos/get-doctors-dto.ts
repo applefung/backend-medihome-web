@@ -1,15 +1,21 @@
-import { IsIn, IsNumberString, IsOptional, IsString } from 'class-validator';
+import {
+  IsIn,
+  IsNumberString,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 import { Order, orders } from '@src/utils/common';
 import { DoctorField, doctorFields } from '@src/utils/doctor';
 
 export class GetDoctorsDto {
   @IsOptional()
-  @IsString()
+  @IsUUID()
   specialtyId: string;
 
   @IsOptional()
-  @IsString()
-  district: string;
+  @IsUUID()
+  districtId: string;
 
   @IsOptional()
   @IsString()

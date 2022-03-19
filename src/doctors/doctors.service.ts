@@ -12,7 +12,7 @@ import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 
 interface GetDoctorsParams {
   specialtyId: string;
-  district: string;
+  districtId: string;
   search: string;
   page: string;
   limit: string;
@@ -35,7 +35,7 @@ export class DoctorsService {
   ) {}
   async getDoctors({
     specialtyId,
-    district,
+    districtId,
     search,
     page = '1',
     limit = '5',
@@ -48,13 +48,13 @@ export class DoctorsService {
     const skip = (parseInt(page) - 1) * take;
     let whereOptions = '';
     if (specialtyId) {
-      whereOptions = `doctor.specialty.id: ${specialtyId}`;
+      whereOptions = `specialty.id = '${specialtyId}'`;
     }
-    if (district) {
-      whereOptions = `${whereOptions}district: ${district},`;
+    if (districtId) {
+      whereOptions = `clinics.district.id = '${districtId}'`;
     }
     if (search) {
-      whereOptions = `${whereOptions}CAST(doctor.name->'tc' AS varchar) ilike '%${search}%' or CAST(doctor.name->'en' AS varchar) ilike '%${search}%' 
+      whereOptions = `CAST(doctor.name->'tc' AS varchar) ilike '%${search}%' or CAST(doctor.name->'en' AS varchar) ilike '%${search}%' 
       or (CASE 
         WHEN doctor.qualifications IS NOT NULL  
         THEN (CAST(doctor.qualifications->'tc' AS varchar) ilike '%${search}%' or CAST(doctor.qualifications->'en' AS varchar) ilike '%${search}%') END) 
@@ -63,7 +63,8 @@ export class DoctorsService {
         THEN (CAST(doctor."hospitalAffiliations"->'tc' AS varchar) ilike '%${search}%' or CAST(doctor."hospitalAffiliations"->'en' AS varchar) ilike '%${search}%') END)
       or (CASE 
         WHEN doctor.services IS NOT NULL 
-        THEN (CAST(doctor.services->'tc' AS varchar) ilike '%${search}%' or CAST(doctor."services"->'en' AS varchar) ilike '%${search}%') END)`;
+        THEN (CAST(doctor.services->'tc' AS varchar) ilike '%${search}%' or CAST(doctor."services"->'en' AS varchar) ilike '%${search}%') END)
+      or (CAST(specialty.name->'tc'AS varchar) ilike '%${search}%' or CAST(specialty.name->'en'AS varchar) ilike '%${search}%')`;
     }
 
     const result = await this.doctorsRepository
