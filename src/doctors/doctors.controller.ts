@@ -8,8 +8,8 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { DoctorsService } from '../services/doctors.service';
-import { DoctorDto, GetDoctorsDto } from '../dtos';
+import { DoctorsService } from './doctors.service';
+import { DoctorDto, GetDoctorsDto } from './dtos';
 import { formatReservationTime } from '@src/utils/clinic';
 
 @Controller('doctors')

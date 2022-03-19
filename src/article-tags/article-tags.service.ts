@@ -2,7 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleTag } from '@src/entities';
 import { getResponseByErrorCode } from '@src/utils/error';
-import { FindConditions, FindOneOptions, Repository } from 'typeorm';
+import {
+  FindConditions,
+  FindManyOptions,
+  FindOneOptions,
+  Repository,
+} from 'typeorm';
 
 @Injectable()
 export class ArticleTagsService {
@@ -11,7 +16,7 @@ export class ArticleTagsService {
     private articleTagsRepository: Repository<ArticleTag>,
   ) {}
 
-  getArticleTags(options?: FindOneOptions<ArticleTag>) {
+  getArticleTags(options?: FindManyOptions<ArticleTag>) {
     return this.articleTagsRepository.find(options);
   }
 

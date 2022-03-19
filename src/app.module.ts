@@ -9,7 +9,9 @@ import { ArticlesModule } from './articles/articles.module';
 import { CarouselsModule } from './carousels/carousels.module';
 import { ClinicsModule } from './clinic/clinic.module';
 import { DistrictsModule } from './districts/districts.module';
+import { DoctorUsersModule } from './doctor-user/doctor-user.module';
 import { DoctorsModule } from './doctors/doctors.module';
+import { PatientUsersModule } from './patient-users/patient-users.module';
 import { RegionsModule } from './regions/regions.module';
 import { SpecialtiesModule } from './specialties/specialties.module';
 
@@ -44,12 +46,14 @@ import { SpecialtiesModule } from './specialties/specialties.module';
     CarouselsModule,
     SpecialtiesModule,
     DoctorsModule,
+    DoctorUsersModule,
     ClinicsModule,
     ArticlesModule,
     ArticleTagsModule,
     ArticleTopicsModule,
     DistrictsModule,
     RegionsModule,
+    PatientUsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

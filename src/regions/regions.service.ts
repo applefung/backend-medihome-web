@@ -2,7 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Region } from '@src/entities';
 import { getResponseByErrorCode } from '@src/utils/error';
-import { FindConditions, FindOneOptions, Repository } from 'typeorm';
+import {
+  FindConditions,
+  FindManyOptions,
+  FindOneOptions,
+  Repository,
+} from 'typeorm';
 
 @Injectable()
 export class RegionsService {
@@ -10,7 +15,7 @@ export class RegionsService {
     @InjectRepository(Region)
     private regionsRepository: Repository<Region>,
   ) {}
-  getRegions(options?: FindOneOptions<Region>) {
+  getRegions(options?: FindManyOptions<Region>) {
     return this.regionsRepository.find(options);
   }
 

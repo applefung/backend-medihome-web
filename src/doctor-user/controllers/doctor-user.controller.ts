@@ -7,8 +7,8 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { DoctorUsersService } from './doctor-user.service';
-import { DoctorUserDto, UpdateDoctorUserDto } from './dtos';
+import { DoctorUsersService } from '../services/doctor-user.service';
+import { DoctorUserDto, UpdateDoctorUserDto } from '../dtos';
 
 @Controller('doctor-users')
 export class DoctorUsersController {

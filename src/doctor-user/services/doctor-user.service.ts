@@ -2,7 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Doctor, DoctorUser } from '@src/entities';
 import { getResponseByErrorCode } from '@src/utils/error';
-import { FindConditions, FindOneOptions, Repository } from 'typeorm';
+import {
+  DeepPartial,
+  FindConditions,
+  FindOneOptions,
+  Repository,
+} from 'typeorm';
 
 @Injectable()
 export class DoctorUsersService {
@@ -52,7 +57,7 @@ export class DoctorUsersService {
     return this.doctorUsersRepository.save(data);
   }
 
-  async updateDoctorUser(id: string, data: Partial<DoctorUser>) {
+  async updateDoctorUser(id: string, data: DeepPartial<DoctorUser>) {
     await this.doctorUsersRepository.update(id, data);
   }
 

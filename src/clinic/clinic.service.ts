@@ -4,7 +4,12 @@ import { DistrictsService } from '@src/districts/districts.service';
 import { Clinic } from '@src/entities';
 import { CreateClinicProps } from '@src/types/clinic';
 import { getResponseByErrorCode } from '@src/utils/error';
-import { FindConditions, FindOneOptions, Repository } from 'typeorm';
+import {
+  FindConditions,
+  FindManyOptions,
+  FindOneOptions,
+  Repository,
+} from 'typeorm';
 
 @Injectable()
 export class ClinicsService {
@@ -13,7 +18,7 @@ export class ClinicsService {
     private clinicsRepository: Repository<Clinic>,
     private districtsService: DistrictsService,
   ) {}
-  getClinics(options?: FindOneOptions<Clinic>) {
+  getClinics(options?: FindManyOptions<Clinic>) {
     return this.clinicsRepository.find(options);
   }
 

@@ -12,4 +12,7 @@ export class DoctorCommentDto {
 
   @IsUUID()
   patientUserId: string;
+
+  @IsUUID()
+  doctorUserId: string;
 }

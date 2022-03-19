@@ -2,7 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Specialty } from '@src/entities';
 import { getResponseByErrorCode } from '@src/utils/error';
-import { FindConditions, FindOneOptions, Repository } from 'typeorm';
+import {
+  FindConditions,
+  FindManyOptions,
+  FindOneOptions,
+  Repository,
+} from 'typeorm';
 
 @Injectable()
 export class SpecialtiesService {
@@ -10,7 +15,7 @@ export class SpecialtiesService {
     @InjectRepository(Specialty)
     private specialtiesRepository: Repository<Specialty>,
   ) {}
-  getSpecialties(options?: FindOneOptions<Specialty>) {
+  getSpecialties(options?: FindManyOptions<Specialty>) {
     return this.specialtiesRepository.find(options);
   }
 

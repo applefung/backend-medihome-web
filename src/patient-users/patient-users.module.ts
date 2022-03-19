@@ -8,5 +8,6 @@ import { PatientUsersService } from './patient-users.service';
   imports: [TypeOrmModule.forFeature([PatientUser, PatientProfile, UserLog])],
   controllers: [PatientUsersController],
   providers: [PatientUsersService],
+  exports: [PatientUsersService],
 })
-export class PatientsModule {}
+export class PatientUsersModule {}

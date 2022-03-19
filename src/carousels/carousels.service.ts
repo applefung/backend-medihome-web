@@ -2,7 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Carousel } from '@src/entities';
 import { getResponseByErrorCode } from '@src/utils/error';
-import { FindConditions, FindOneOptions, Repository } from 'typeorm';
+import {
+  FindConditions,
+  FindManyOptions,
+  FindOneOptions,
+  Repository,
+} from 'typeorm';
 
 @Injectable()
 export class CarouselsService {
@@ -10,7 +15,7 @@ export class CarouselsService {
     @InjectRepository(Carousel)
     private carouselsRepository: Repository<Carousel>,
   ) {}
-  getCarousels(options?: FindOneOptions<Carousel>) {
+  getCarousels(options?: FindManyOptions<Carousel>) {
     return this.carouselsRepository.find(options);
   }
 

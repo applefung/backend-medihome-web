@@ -11,10 +11,12 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Clinic, District } from '.';
+import { Clinic } from './clinic.entity';
+import { DoctorUser } from './doctor-user.entity';
 import { Specialty } from './specialty.entity';
 
 @Entity()
@@ -52,6 +54,10 @@ export class Doctor {
   @ManyToMany(() => Clinic, (clinic) => clinic.doctors)
   @JoinTable()
   clinics: Clinic[];
+
+  @OneToOne(() => DoctorUser, { cascade: ['insert', 'update'] })
+  @JoinColumn()
+  doctorUser: DoctorUser;
 
   @CreateDateColumn()
   createdAt: Date;

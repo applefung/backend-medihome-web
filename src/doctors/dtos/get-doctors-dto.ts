@@ -5,7 +5,7 @@ import { DoctorField, doctorFields } from '@src/utils/doctor';
 export class GetDoctorsDto {
   @IsOptional()
   @IsString()
-  specialty: string;
+  specialtyId: string;
 
   @IsOptional()
   @IsString()

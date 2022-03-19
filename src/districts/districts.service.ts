@@ -3,7 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { District } from '@src/entities';
 import { RegionsService } from '@src/regions/regions.service';
 import { getResponseByErrorCode } from '@src/utils/error';
-import { FindConditions, FindOneOptions, Repository } from 'typeorm';
+import {
+  FindConditions,
+  FindManyOptions,
+  FindOneOptions,
+  Repository,
+} from 'typeorm';
 
 @Injectable()
 export class DistrictsService {
@@ -12,7 +17,7 @@ export class DistrictsService {
     private districtsRepository: Repository<District>,
     private regionsService: RegionsService,
   ) {}
-  getDistricts(options?: FindOneOptions<District>) {
+  getDistricts(options?: FindManyOptions<District>) {
     return this.districtsRepository.find(options);
   }
 

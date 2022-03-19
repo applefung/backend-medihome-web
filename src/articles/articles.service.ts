@@ -3,7 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleTagsService } from '@src/article-tags/article-tags.service';
 import { Article } from '@src/entities';
 import { getResponseByErrorCode } from '@src/utils/error';
-import { FindConditions, FindOneOptions, Repository } from 'typeorm';
+import {
+  FindConditions,
+  FindManyOptions,
+  FindOneOptions,
+  Repository,
+} from 'typeorm';
 
 interface ArticleParams extends Pick<Article, 'title' | 'content' | 'writer'> {
   topic: string;
@@ -18,7 +23,7 @@ export class ArticlesService {
     private articleTagsService: ArticleTagsService,
   ) {}
 
-  getArticles(options?: FindOneOptions<Article>) {
+  getArticles(options?: FindManyOptions<Article>) {
     return this.articlesRepository.find(options);
   }
 
