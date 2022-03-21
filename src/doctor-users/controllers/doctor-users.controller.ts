@@ -7,8 +7,10 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { DoctorUsersService } from '../services/doctor-user.service';
+import { DoctorUsersService } from '../services/doctor-users.service';
 import { DoctorUserDto, UpdateDoctorUserDto } from '../dtos';
+import { formatReservationTime } from '@src/utils/clinic';
+import { Gender } from '@src/utils/common';
 
 @Controller('doctor-users')
 export class DoctorUsersController {
@@ -25,8 +27,17 @@ export class DoctorUsersController {
   }
 
   @Post()
-  createDoctorUser(@Body() data: DoctorUserDto) {
-    return this.doctorUsersService.createDoctorUser(data);
+  createDoctorUser(@Body() { gender, clinics, ...data }: DoctorUserDto) {
+    return this.doctorUsersService.createDoctorUser({
+      ...data,
+      gender: gender.toUpperCase() as Gender,
+      clinics: clinics.map(({ reservationTime, ...item }) => ({
+        ...item,
+        ...(reservationTime && {
+          reservationTime: formatReservationTime(reservationTime),
+        }),
+      })),
+    });
   }
 
   @Patch(':id')

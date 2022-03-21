@@ -121,3 +121,15 @@ export class AddressDto extends BilingualDto {
   @IsNumberString()
   longitude: string;
 }
+
+export class NameDto extends BilingualDto {
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => BilingualDto)
+  firstName: BilingualDto;
+
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => BilingualDto)
+  lastName: BilingualDto;
+}

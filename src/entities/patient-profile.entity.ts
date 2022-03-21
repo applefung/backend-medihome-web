@@ -1,4 +1,5 @@
 import { Gender, genders } from '@src/utils/common';
+import { Height, Weight } from '@src/types/patient-profile';
 import {
   Column,
   CreateDateColumn,
@@ -13,7 +14,7 @@ export class PatientProfile {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('bytea')
+  @Column({ type: 'bytea', nullable: true })
   avatar: Buffer;
 
   @Column({ type: 'enum', enum: genders, nullable: true })
@@ -22,11 +23,11 @@ export class PatientProfile {
   @Column({ nullable: true })
   dateOfBirth: Date;
 
-  @Column({ nullable: true })
-  height: number;
+  @Column({ type: 'json', nullable: true })
+  height: Height;
 
-  @Column({ nullable: true })
-  weight: number;
+  @Column({ type: 'json', nullable: true })
+  weight: Weight;
 
   @CreateDateColumn()
   createdAt: Date;

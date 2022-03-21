@@ -9,7 +9,7 @@ import { ArticlesModule } from './articles/articles.module';
 import { CarouselsModule } from './carousels/carousels.module';
 import { ClinicsModule } from './clinic/clinic.module';
 import { DistrictsModule } from './districts/districts.module';
-import { DoctorUsersModule } from './doctor-user/doctor-user.module';
+import { DoctorUsersModule } from './doctor-users/doctor-users.module';
 import { DoctorsModule } from './doctors/doctors.module';
 import { PatientUsersModule } from './patient-users/patient-users.module';
 import { RegionsModule } from './regions/regions.module';

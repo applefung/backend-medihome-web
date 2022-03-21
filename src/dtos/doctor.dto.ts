@@ -7,15 +7,20 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { BilingualArrayDto, BilingualDto, ContactsDto } from '@src/dtos';
-import { languages } from '@src/utils/doctor';
-import { GenderLowerCase, gendersLowerCase } from '@src/utils/common';
+import { BilingualArrayDto, ContactsDto } from '@src/dtos';
+import {
+  GenderLowerCase,
+  gendersLowerCase,
+  languages,
+} from '@src/utils/common';
 import { CreateClinicDto } from '@src/clinic/dtos';
+import { NameDto } from './common.dto';
 
 export class DoctorDto {
+  @IsDefined()
   @ValidateNested()
-  @Type(() => BilingualDto)
-  name: BilingualDto;
+  @Type(() => NameDto)
+  name: NameDto;
 
   @IsString()
   @IsIn(gendersLowerCase)

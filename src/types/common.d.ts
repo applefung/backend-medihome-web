@@ -28,3 +28,8 @@ export interface AddressFormat extends BilingualFormat {
   latitude: string;
   longitude: string;
 }
+
+export interface Name {
+  firstName: BilingualFormat;
+  lastName: BilingualFormat;
+}

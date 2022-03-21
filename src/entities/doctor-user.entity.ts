@@ -22,7 +22,6 @@ export class DoctorUser {
   password: string;
 
   @OneToOne(() => Doctor, { cascade: ['insert', 'update'] })
-  @JoinColumn()
   doctor: Doctor;
 
   @CreateDateColumn()

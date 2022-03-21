@@ -1,12 +1,16 @@
 import {
   IsDateString,
+  IsDefined,
   IsEmail,
   IsIn,
   IsNumber,
   IsOptional,
   IsString,
+  ValidateNested,
 } from 'class-validator';
 import { GenderLowerCase, gendersLowerCase } from '@src/utils/common';
+import { HeightDto, WeightDto } from '@src/dtos/patient-profile.dto';
+import { Type } from 'class-transformer';
 
 export class PatientUserDto {
   @IsEmail()
@@ -14,6 +18,9 @@ export class PatientUserDto {
 
   @IsString()
   password: string;
+
+  @IsString()
+  username: string;
 
   @IsOptional()
   @IsString()
@@ -24,9 +31,15 @@ export class PatientUserDto {
   @IsDateString()
   dateOfBirth: string;
 
-  @IsNumber()
-  height: number;
+  @IsOptional()
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => HeightDto)
+  height: HeightDto;
 
-  @IsNumber()
-  weight: number;
+  @IsOptional()
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => WeightDto)
+  weight: WeightDto;
 }

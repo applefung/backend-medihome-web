@@ -8,10 +8,10 @@ import {
   Post,
 } from '@nestjs/common';
 import { DoctorCommentsService } from '../services/doctor-comments.service';
-import { DoctorCommentDto } from '..//dtos';
+import { DoctorCommentDto } from '../dtos';
 
 @Controller('doctor-users')
-export class DoctorsController {
+export class DoctorCommentsController {
   constructor(private readonly doctorCommentsService: DoctorCommentsService) {}
 
   @Get(':id/comments')
@@ -20,7 +20,7 @@ export class DoctorsController {
   }
 
   @Get('comments/:commentId')
-  getCommentById(@Param('id') id: string) {
+  getCommentById(@Param('commentId') id: string) {
     return this.doctorCommentsService.getDoctorComment({ id });
   }
 
@@ -31,14 +31,14 @@ export class DoctorsController {
 
   @Patch('comments/:commentId')
   async updateDoctorComment(
-    @Param('id') id: string,
+    @Param('commentId') id: string,
     @Body() data: DoctorCommentDto,
   ) {
     await this.doctorCommentsService.updateDoctorComment(id, data);
   }
 
-  @Delete(':id')
-  async deleteDoctorComment(@Param('id') id: string) {
+  @Delete('comments/:commentId')
+  async deleteDoctorComment(@Param('commentId') id: string) {
     await this.doctorCommentsService.deleteDoctorComment(id);
   }
 }

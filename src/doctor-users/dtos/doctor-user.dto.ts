@@ -1,4 +1,4 @@
-import { IsEmail, IsString } from 'class-validator';
+import { IsEmail, IsString, IsUUID } from 'class-validator';
 import { DoctorDto } from '@src/dtos/doctor.dto';
 
 export class DoctorUserDto extends DoctorDto {
@@ -7,4 +7,7 @@ export class DoctorUserDto extends DoctorDto {
 
   @IsString()
   password: string;
+
+  @IsUUID()
+  specialtyId: string;
 }

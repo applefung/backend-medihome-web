@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClinicsService } from '@src/clinic/clinic.service';
+import { DoctorCommentsService } from '@src/doctor-users/services/doctor-comments.service';
 import { Doctor } from '@src/entities';
 import { SpecialtiesService } from '@src/specialties/specialties.service';
 import { CreateClinicProps } from '@src/types/clinic';
@@ -32,6 +33,7 @@ export class DoctorsService {
     private doctorsRepository: Repository<Doctor>,
     private clinicsService: ClinicsService,
     private specialtiesService: SpecialtiesService,
+    private doctorCommentsService: DoctorCommentsService,
   ) {}
   async getDoctors({
     specialtyId,
@@ -72,15 +74,40 @@ export class DoctorsService {
       .leftJoinAndSelect('doctor.specialty', 'specialty')
       .leftJoinAndSelect('doctor.clinics', 'clinics')
       .leftJoinAndSelect('clinics.district', 'district')
+      .leftJoinAndSelect('doctor.doctorUser', 'doctorUser')
       .where(whereOptions)
       .take(take)
       .skip(skip)
       .orderBy(orderBy, order as OrderType)
       .getMany();
 
+    const finalResult = await Promise.all(
+      result.map(async ({ doctorUser, ...item }) => {
+        if (doctorUser) {
+          const doctorComments =
+            await this.doctorCommentsService.getDoctorCommentsByDoctorId(
+              doctorUser.id,
+            );
+
+          const rating =
+            doctorComments
+              .map(({ rating }) => rating)
+              .reduce((prev, curr) => prev + curr) / doctorComments.length;
+
+          return {
+            rating,
+            ...item,
+          };
+        }
+        return {
+          ...item,
+        };
+      }),
+    );
+
     return {
-      ...result,
-      count: result.length,
+      ...finalResult,
+      count: finalResult.length,
     };
   }
 

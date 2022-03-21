@@ -1,7 +1,6 @@
-import type { BilingualArrayFormat, BilingualFormat } from '@src/types/common';
+import type { BilingualArrayFormat, Name } from '@src/types/common';
 import type { CommentType, ContactsFormat } from '@src/types/doctor';
-import { Gender, genders } from '@src/utils/common';
-import { languages } from '@src/utils/doctor';
+import { Gender, genders, languages } from '@src/utils/common';
 import {
   Column,
   CreateDateColumn,
@@ -25,7 +24,7 @@ export class Doctor {
   id: string;
 
   @Column('json')
-  name: BilingualFormat;
+  name: Name;
 
   @Column({ type: 'enum', enum: genders, nullable: true })
   gender: Gender;

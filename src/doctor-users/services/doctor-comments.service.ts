@@ -4,7 +4,7 @@ import { DoctorComment } from '@src/entities';
 import { PatientUsersService } from '@src/patient-users/patient-users.service';
 import { getResponseByErrorCode } from '@src/utils/error';
 import { FindConditions, FindOneOptions, Repository } from 'typeorm';
-import { DoctorUsersService } from './doctor-user.service';
+import { DoctorUsersService } from './doctor-users.service';
 
 type DoctorCommentType = Record<'doctorUserId' | 'patientUserId', string> &
   Pick<DoctorComment, 'title' | 'content' | 'rating'>;

@@ -11,6 +11,7 @@ import {
 import { DoctorsService } from './doctors.service';
 import { DoctorDto, GetDoctorsDto } from './dtos';
 import { formatReservationTime } from '@src/utils/clinic';
+import { Gender } from '@src/utils/common';
 
 @Controller('doctors')
 export class DoctorsController {
@@ -33,7 +34,7 @@ export class DoctorsController {
   createDoctor(@Body() { clinics, gender, ...data }: DoctorDto) {
     return this.doctorsService.createDoctor({
       ...data,
-      gender: gender.toUpperCase(),
+      gender: gender.toUpperCase() as Gender,
       clinics: clinics.map(({ reservationTime, ...item }) => ({
         ...item,
         ...(reservationTime && {
@@ -51,7 +52,7 @@ export class DoctorsController {
     await this.doctorsService.getDoctorOrFail({ id });
     return this.doctorsService.updateDoctor(id, {
       ...data,
-      gender: gender.toUpperCase(),
+      gender: gender.toUpperCase() as Gender,
       clinics: clinics.map(({ reservationTime, ...item }) => ({
         ...item,
         ...(reservationTime && {

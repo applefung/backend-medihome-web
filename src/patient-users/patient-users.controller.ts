@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import { PatientUsersService } from './patient-users.service';
 import { PatientUserDto } from './dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Gender } from '@src/utils/common';
 
 @Controller('patient-users')
 export class PatientUsersController {
@@ -29,13 +30,15 @@ export class PatientUsersController {
   }
 
   @Post()
-  createPatientUser(
-    @Body() { email, password, dateOfBirth, ...restData }: PatientUserDto,
+  async createPatientUser(
+    @Body()
+    { email, password, gender, dateOfBirth, ...restData }: PatientUserDto,
   ) {
-    return this.patientUsersService.createPatientUser({
+    await this.patientUsersService.createPatientUser({
       email,
       password,
       patientProfile: {
+        ...(gender && { gender: gender.toUpperCase() as Gender }),
         dateOfBirth: dayjs(dateOfBirth).toDate(),
         ...restData,
       },
