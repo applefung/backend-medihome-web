@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClinicsService } from '@src/clinic/clinic.service';
+import { DoctorUsersService } from '@src/doctor-users/services/doctor-users.service';
 import { DoctorCommentsService } from '@src/doctor-users/services/doctor-comments.service';
 import { Doctor } from '@src/entities';
 import { SpecialtiesService } from '@src/specialties/specialties.service';
@@ -34,6 +35,7 @@ export class DoctorsService {
     private clinicsService: ClinicsService,
     private specialtiesService: SpecialtiesService,
     private doctorCommentsService: DoctorCommentsService,
+    private doctorUsersService: DoctorUsersService,
   ) {}
   async getDoctors({
     specialtyId,
@@ -74,7 +76,6 @@ export class DoctorsService {
       .leftJoinAndSelect('doctor.specialty', 'specialty')
       .leftJoinAndSelect('doctor.clinics', 'clinics')
       .leftJoinAndSelect('clinics.district', 'district')
-      .leftJoinAndSelect('doctor.doctorUser', 'doctorUser')
       .where(whereOptions)
       .take(take)
       .skip(skip)
@@ -82,18 +83,20 @@ export class DoctorsService {
       .getMany();
 
     const finalResult = await Promise.all(
-      result.map(async ({ doctorUser, ...item }) => {
+      result.map(async ({ id, ...item }) => {
+        const doctorUser = await this.doctorUsersService.getDoctorUser({
+          doctor: { id },
+        });
         if (doctorUser) {
           const doctorComments =
             await this.doctorCommentsService.getDoctorCommentsByDoctorId(
               doctorUser.id,
             );
-
           const rating =
             doctorComments
               .map(({ rating }) => rating)
-              .reduce((prev, curr) => prev + curr) / doctorComments.length;
-
+              .reduce((prev, curr) => prev + curr, 0) ??
+            0 / doctorComments.length;
           return {
             rating,
             ...item,
@@ -133,35 +136,10 @@ export class DoctorsService {
     const specialty = await this.specialtiesService.getSpecialtyOrFail({
       id: specialtyId,
     });
-
-    const currentClinicIds = clinics
-      .filter(({ id }) => !!id)
-      .map(({ id }) => id);
-
-    const currentClinics = await Promise.all(
-      currentClinicIds.map(
-        async (item) => await this.clinicsService.getClinic({ id: item }),
-      ),
-    );
-
-    if (currentClinics.includes(undefined)) {
-      throw new NotFoundException(getResponseByErrorCode('CLINIC_NOT_FOUND'));
-    }
-
-    const newClinics = clinics.filter(
-      ({ id }) => !currentClinicIds.includes(id),
-    );
-
-    const createdClinics = await Promise.all(
-      newClinics.map(
-        async (item) => await this.clinicsService.createClinic(item),
-      ),
-    );
-
     await this.doctorsRepository.save({
       ...data,
       specialty,
-      clinics: [...currentClinics, ...createdClinics].flat(),
+      clinics: await this.clinicsService.getCreatedClinicData(clinics),
     });
   }
 

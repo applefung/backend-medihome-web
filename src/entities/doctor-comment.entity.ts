@@ -4,6 +4,7 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -25,11 +26,11 @@ export class DoctorComment {
   @Column()
   rating: number;
 
-  @OneToOne(() => DoctorUser)
+  @ManyToOne(() => DoctorUser)
   @JoinColumn()
   doctorUser: DoctorUser;
 
-  @OneToOne(() => PatientUser)
+  @ManyToOne(() => PatientUser)
   @JoinColumn()
   patientUser: PatientUser;
 

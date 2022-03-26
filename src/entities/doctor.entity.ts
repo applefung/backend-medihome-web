@@ -1,4 +1,4 @@
-import type { BilingualArrayFormat, Name } from '@src/types/common';
+import type { BilingualFormat, Name } from '@src/types/common';
 import type { CommentType, ContactsFormat } from '@src/types/doctor';
 import { Gender, genders, languages } from '@src/utils/common';
 import {
@@ -6,16 +6,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Clinic } from './clinic.entity';
-import { DoctorUser } from './doctor-user.entity';
 import { Specialty } from './specialty.entity';
 
 @Entity()
@@ -36,13 +33,13 @@ export class Doctor {
   contacts: ContactsFormat;
 
   @Column({ type: 'json', nullable: true })
-  qualifications: BilingualArrayFormat;
+  qualifications: BilingualFormat[];
 
   @Column({ type: 'json', nullable: true })
-  services: BilingualArrayFormat;
+  services: BilingualFormat[];
 
   @Column({ type: 'json', nullable: true })
-  hospitalAffiliations: BilingualArrayFormat;
+  hospitalAffiliations: BilingualFormat[];
 
   @Column({ type: 'json', nullable: true })
   comments: CommentType[];
@@ -53,10 +50,6 @@ export class Doctor {
   @ManyToMany(() => Clinic, (clinic) => clinic.doctors)
   @JoinTable()
   clinics: Clinic[];
-
-  @OneToOne(() => DoctorUser, { cascade: ['insert', 'update'] })
-  @JoinColumn()
-  doctorUser: DoctorUser;
 
   @CreateDateColumn()
   createdAt: Date;

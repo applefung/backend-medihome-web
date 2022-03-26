@@ -41,7 +41,6 @@ export class ClinicsService {
   }
 
   async createClinic({ districtId, ...data }: CreateClinicProps) {
-    console.log('districtId', districtId);
     const district = await this.districtsService.getDistrictOrFail({
       id: districtId,
     });
@@ -49,6 +48,33 @@ export class ClinicsService {
       ...data,
       district,
     });
+  }
+
+  async getCreatedClinicData(clinics: Partial<Clinic>[]) {
+    const currentClinicIds = clinics
+      .filter(({ id }) => !!id)
+      .map(({ id }) => id);
+
+    const currentClinics = await Promise.all(
+      currentClinicIds.map(
+        async (item: string) => await this.getClinic({ id: item }),
+      ),
+    );
+
+    if (currentClinics.includes(undefined)) {
+      throw new NotFoundException(getResponseByErrorCode('CLINIC_NOT_FOUND'));
+    }
+
+    const newClinics = clinics.filter(
+      ({ id }) => !currentClinicIds.includes(id),
+    );
+
+    const createdClinics = await Promise.all(
+      newClinics.map(
+        async (item: Partial<Clinic>) => await this.createClinic(item),
+      ),
+    );
+    return [...currentClinics, ...createdClinics].flat();
   }
 
   async updateClinic(id: string, data: Partial<Clinic>) {

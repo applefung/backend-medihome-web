@@ -17,16 +17,6 @@ export class BilingualDto {
   tc: string;
 }
 
-export class BilingualArrayDto {
-  @IsString({ each: true })
-  @IsArray()
-  en: string[];
-
-  @IsString({ each: true })
-  @IsArray()
-  tc: string[];
-}
-
 export class ContactsDto {
   @IsOptional()
   @IsString({ each: true })
@@ -114,7 +104,7 @@ export class ReservationTimeDto {
   timeslots: TimeslotDto[];
 }
 
-export class AddressDto extends BilingualDto {
+export class LocationDto {
   @IsNumberString()
   latitude: string;
 
@@ -122,7 +112,19 @@ export class AddressDto extends BilingualDto {
   longitude: string;
 }
 
-export class NameDto extends BilingualDto {
+export class AddressDto {
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => BilingualDto)
+  name: BilingualDto;
+
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => LocationDto)
+  location: LocationDto;
+}
+
+export class NameDto {
   @IsDefined()
   @ValidateNested()
   @Type(() => BilingualDto)

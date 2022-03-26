@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ClinicsService } from '@src/clinic/clinic.service';
 import { Clinic, Doctor, DoctorUser } from '@src/entities';
 import { SpecialtiesService } from '@src/specialties/specialties.service';
 import { encryptPassword } from '@src/utils/auth';
@@ -32,6 +33,7 @@ export class DoctorUsersService {
     @InjectRepository(DoctorUser)
     private doctorUsersRepository: Repository<DoctorUser>,
     private specialtiesService: SpecialtiesService,
+    private clinicsService: ClinicsService,
   ) {}
   // ! May need pagination
   getDoctorUsers(options?: FindOneOptions<DoctorUser>) {
@@ -69,13 +71,13 @@ export class DoctorUsersService {
     const specialty = await this.specialtiesService.getSpecialtyOrFail({
       id: specialtyId,
     });
-    return this.doctorUsersRepository.save({
+    const doctorUser = await this.doctorUsersRepository.save({
       email,
       password: await encryptPassword(password),
       doctor: {
         ...data,
         specialty,
-        clinics,
+        clinics: await this.clinicsService.getCreatedClinicData(clinics),
       },
     });
   }

@@ -6,7 +6,6 @@ export interface ErrorResponse {
 type Locale = 'tc' | 'en';
 
 export type BilingualFormat = Record<Locale, string>;
-export type BilingualArrayFormat = Record<Locale, string[]>;
 
 export type OrderType = 'DESC' | 'ASC';
 
@@ -24,9 +23,13 @@ export type BusinessHours = Partial<
   Record<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun', Timeslot[]>
 >;
 
-export interface AddressFormat extends BilingualFormat {
+interface LocationFormat {
   latitude: string;
   longitude: string;
+}
+export interface AddressFormat {
+  name: BilingualFormat;
+  location: LocationFormat;
 }
 
 export interface Name {

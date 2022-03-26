@@ -32,11 +32,19 @@ export class PatientUsersController {
   @Post()
   async createPatientUser(
     @Body()
-    { email, password, gender, dateOfBirth, ...restData }: PatientUserDto,
+    {
+      email,
+      password,
+      username,
+      gender,
+      dateOfBirth,
+      ...restData
+    }: PatientUserDto,
   ) {
     await this.patientUsersService.createPatientUser({
       email,
       password,
+      username,
       patientProfile: {
         ...(gender && { gender: gender.toUpperCase() as Gender }),
         dateOfBirth: dayjs(dateOfBirth).toDate(),
