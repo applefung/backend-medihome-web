@@ -58,7 +58,8 @@ export class DoctorsService {
       whereOptions = `clinics.district.id = '${districtId}'`;
     }
     if (search) {
-      whereOptions = `CAST(doctor.name->'tc' AS varchar) ilike '%${search}%' or CAST(doctor.name->'en' AS varchar) ilike '%${search}%' 
+      whereOptions = `CAST(CONCAT(doctor.name->'firstName'->'tc', doctor.name->'lastName'->'tc') AS varchar) ilike '%${search}%' or CAST(CONCAT(doctor.name->'firstName'->'en', doctor.name->'lastName'->'en') AS varchar) ilike '%${search}%' 
+      or CAST(CONCAT(doctor.name->'lastName'->'tc', doctor.name->'firstName'->'tc') AS varchar) ilike '%${search}%' or CAST(CONCAT(doctor.name->'lastName'->'en', doctor.name->'firstName'->'en') AS varchar) ilike '%${search}%' 
       or (CASE 
         WHEN doctor.qualifications IS NOT NULL  
         THEN (CAST(doctor.qualifications->'tc' AS varchar) ilike '%${search}%' or CAST(doctor.qualifications->'en' AS varchar) ilike '%${search}%') END) 
@@ -103,6 +104,7 @@ export class DoctorsService {
           };
         }
         return {
+          rating: 0,
           ...item,
         };
       }),
