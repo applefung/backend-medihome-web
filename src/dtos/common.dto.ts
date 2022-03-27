@@ -134,4 +134,9 @@ export class NameDto {
   @ValidateNested()
   @Type(() => BilingualDto)
   lastName: BilingualDto;
+
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => BilingualDto)
+  fullName: BilingualDto;
 }

@@ -35,4 +35,5 @@ export interface AddressFormat {
 export interface Name {
   firstName: BilingualFormat;
   lastName: BilingualFormat;
+  fullName: BilingualFormat;
 }

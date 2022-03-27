@@ -1,3 +1,5 @@
+import { Timeslot } from './common';
+
 export interface ReservationTime {
   date: Date;
   timeslots: Timeslot[];

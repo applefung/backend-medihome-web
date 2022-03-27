@@ -111,7 +111,7 @@ export class DoctorsService {
     );
 
     return {
-      ...finalResult,
+      data: finalResult,
       count: finalResult.length,
     };
   }
