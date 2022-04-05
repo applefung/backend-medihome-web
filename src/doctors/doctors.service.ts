@@ -94,17 +94,20 @@ export class DoctorsService {
               doctorUser.id,
             );
           const rating =
-            doctorComments
+            (doctorComments
               .map(({ rating }) => rating)
-              .reduce((prev, curr) => prev + curr, 0) ??
-            0 / doctorComments.length;
+              .reduce((prev, curr) => prev + curr, 0) ?? 0) /
+            doctorComments.length;
+
           return {
             rating,
+            id,
             ...item,
           };
         }
         return {
           rating: 0,
+          id,
           ...item,
         };
       }),
