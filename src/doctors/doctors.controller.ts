@@ -27,7 +27,10 @@ export class DoctorsController {
 
   @Get(':id')
   getDoctor(@Param('id') id: string) {
-    return this.doctorsService.getDoctor({ id });
+    return this.doctorsService.getDoctor(
+      { id },
+      { relations: ['clinics', 'clinics.district', 'specialty'] },
+    );
   }
 
   @Post()
