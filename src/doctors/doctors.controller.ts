@@ -12,6 +12,7 @@ import { DoctorsService } from './doctors.service';
 import { DoctorDto, GetDoctorsDto } from './dtos';
 import { formatReservationTime } from '@src/utils/clinic';
 import { Gender } from '@src/utils/common';
+import { isUUID } from 'class-validator';
 
 @Controller('doctors')
 export class DoctorsController {
@@ -26,11 +27,18 @@ export class DoctorsController {
   }
 
   @Get(':id')
-  getDoctor(@Param('id') id: string) {
-    return this.doctorsService.getDoctor(
+  async getDoctor(@Param('id') id: string) {
+    if (!isUUID(id)) {
+      return {};
+    }
+    const doctor = await this.doctorsService.getDoctor(
       { id },
       { relations: ['clinics', 'clinics.district', 'specialty'] },
     );
+    if (!doctor) {
+      return {};
+    }
+    return doctor;
   }
 
   @Post()
