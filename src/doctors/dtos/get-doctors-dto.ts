@@ -10,11 +10,11 @@ import { DoctorField, doctorFields } from '@src/utils/doctor';
 
 export class GetDoctorsDto {
   @IsOptional()
-  @IsUUID()
+  @IsString()
   specialtyId: string;
 
   @IsOptional()
-  @IsUUID()
+  @IsString()
   districtId: string;
 
   @IsOptional()

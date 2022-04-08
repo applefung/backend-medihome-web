@@ -21,9 +21,18 @@ export class DoctorsController {
   @Get()
   getDoctors(
     @Query()
-    data: GetDoctorsDto,
+    { specialtyId, districtId, ...data }: GetDoctorsDto,
   ) {
-    return this.doctorsService.getDoctors(data);
+    if (
+      (!isUUID(specialtyId) && !districtId) ||
+      (!isUUID(districtId) && !specialtyId)
+    ) {
+      return {
+        data: [],
+        count: 0,
+      };
+    }
+    return this.doctorsService.getDoctors({ specialtyId, districtId, ...data });
   }
 
   @Get(':id')
