@@ -19,33 +19,44 @@ export class DoctorsController {
   constructor(private readonly doctorsService: DoctorsService) {}
 
   @Get()
-  getDoctors(
+  getDoctorsWithPagination(
     @Query()
-    { specialtyId, districtId, ...data }: GetDoctorsDto,
+    { specialtyId, districtId, search, ...data }: GetDoctorsDto,
   ) {
     if (
-      (!isUUID(specialtyId) && !districtId) ||
-      (!isUUID(districtId) && !specialtyId)
+      ((!isUUID(specialtyId) && !districtId) ||
+        (!isUUID(districtId) && !specialtyId)) &&
+      !search
     ) {
       return {
         data: [],
         count: 0,
       };
     }
-    return this.doctorsService.getDoctors({ specialtyId, districtId, ...data });
+    return this.doctorsService.getDoctorsWithPagination({
+      specialtyId,
+      districtId,
+      search,
+      ...data,
+    });
+  }
+
+  @Get('/ids')
+  getDoctorIds() {
+    return this.doctorsService.getDoctors({ select: ['id'] });
   }
 
   @Get(':id')
   async getDoctor(@Param('id') id: string) {
     if (!isUUID(id)) {
-      return {};
+      return null;
     }
     const doctor = await this.doctorsService.getDoctor(
       { id },
       { relations: ['clinics', 'clinics.district', 'specialty'] },
     );
     if (!doctor) {
-      return {};
+      return null;
     }
     return doctor;
   }

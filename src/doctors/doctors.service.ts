@@ -1,4 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  FindConditions,
+  FindManyOptions,
+  FindOneOptions,
+  Repository,
+} from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClinicsService } from '@src/clinic/clinic.service';
 import { DoctorUsersService } from '@src/doctor-users/services/doctor-users.service';
@@ -10,7 +16,6 @@ import type { OrderType } from '@src/types/common';
 import { Order } from '@src/utils/common';
 import { DoctorField } from '@src/utils/doctor';
 import { getResponseByErrorCode } from '@src/utils/error';
-import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 
 interface GetDoctorsParams {
   specialtyId: string;
@@ -37,7 +42,7 @@ export class DoctorsService {
     private doctorCommentsService: DoctorCommentsService,
     private doctorUsersService: DoctorUsersService,
   ) {}
-  async getDoctors({
+  async getDoctorsWithPagination({
     specialtyId,
     districtId,
     search,
@@ -117,6 +122,10 @@ export class DoctorsService {
       data: finalResult,
       count: finalResult.length,
     };
+  }
+
+  getDoctors(options?: FindManyOptions<Doctor>) {
+    return this.doctorsRepository.find(options);
   }
 
   getDoctor(
