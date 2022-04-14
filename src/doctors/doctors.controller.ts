@@ -24,9 +24,9 @@ export class DoctorsController {
     { specialtyId, districtId, search, ...data }: GetDoctorsDto,
   ) {
     if (
-      (!isUUID(specialtyId) && !districtId) ||
-      (!isUUID(districtId) && !specialtyId) ||
-      (!isUUID(specialtyId) && !isUUID(districtId) && !search)
+      (specialtyId && !isUUID(specialtyId) && !districtId) ||
+      (districtId && !isUUID(districtId) && !specialtyId) ||
+      (specialtyId && districtId && !isUUID(specialtyId) && !isUUID(districtId))
     ) {
       return {
         data: [],
