@@ -60,10 +60,13 @@ export class DoctorsService {
       whereOptions = `specialty.id = '${specialtyId}'`;
     }
     if (districtId) {
-      whereOptions = `clinics.district.id = '${districtId}'`;
+      whereOptions = `${
+        whereOptions ? `${whereOptions} AND ` : ''
+      }clinics.district.id = '${districtId}'`;
     }
     if (search) {
-      whereOptions = `CAST(CONCAT(doctor.name->'firstName'->'tc', doctor.name->'lastName'->'tc') AS varchar) ilike '%${search}%' or CAST(CONCAT(doctor.name->'firstName'->'en', doctor.name->'lastName'->'en') AS varchar) ilike '%${search}%' 
+      whereOptions = `${whereOptions ? `${whereOptions} AND ` : ''}
+        CAST(CONCAT(doctor.name->'firstName'->'tc', doctor.name->'lastName'->'tc') AS varchar) ilike '%${search}%' or CAST(CONCAT(doctor.name->'firstName'->'en', doctor.name->'lastName'->'en') AS varchar) ilike '%${search}%' 
       or CAST(CONCAT(doctor.name->'lastName'->'tc', doctor.name->'firstName'->'tc') AS varchar) ilike '%${search}%' or CAST(CONCAT(doctor.name->'lastName'->'en', doctor.name->'firstName'->'en') AS varchar) ilike '%${search}%' 
       or (CASE 
         WHEN doctor.qualifications IS NOT NULL  
