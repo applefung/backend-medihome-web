@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TokenRecord } from '@src/entities';
 import { PatientUsersService } from '@src/patient-users/patient-users.service';
 import type { AccessTokenPayload, Role, Token } from '@src/types/auth.d';
-import { TokenType } from '@src/utils/auth';
+import { TokenType, verifyPassword } from '@src/utils/auth';
 import { getResponseByErrorCode } from '@src/utils/error';
 import { randomBytes } from 'crypto';
 import dayjs from 'dayjs';
@@ -33,12 +33,17 @@ export class AuthService {
   async login({ email, password, role }: LoginParams) {
     let memberResult;
     if (role === 'patient') {
-      memberResult = await this.patientUserService.getPatientUserOrFail({
+      memberResult = await this.patientUserService.getPatientUser({
         email,
-        password,
       });
     }
 
+    if (
+      !memberResult ||
+      !(await verifyPassword(memberResult.password, password))
+    ) {
+      throw new UnauthorizedException('WRONG_EMAIL_OR_PASSWORD');
+    }
     const { token: accessToken, expireAt: accessTokenExpireAt } =
       this.signAccessToken({
         id: memberResult.id,

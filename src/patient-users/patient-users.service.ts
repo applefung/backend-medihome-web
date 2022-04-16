@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PatientUser } from '@src/entities';
 import { UserLog } from '@src/entities/user-log.entity';
+import { encryptPassword } from '@src/utils/auth';
 import { getResponseByErrorCode } from '@src/utils/error';
 import {
   DeepPartial,
@@ -39,13 +40,18 @@ export class PatientUsersService {
       options,
     );
     if (!result) {
-      throw new NotFoundException(getResponseByErrorCode('CAROUSEL_NOT_FOUND'));
+      throw new NotFoundException(
+        getResponseByErrorCode('PATIENT_USER_NOT_FOUND'),
+      );
     }
     return result;
   }
 
-  createPatientUser(data: DeepPartial<PatientUser>) {
-    return this.patientUsersRepository.save(data);
+  async createPatientUser({ password, ...data }: DeepPartial<PatientUser>) {
+    return this.patientUsersRepository.save({
+      password: await encryptPassword(password),
+      ...data,
+    });
   }
 
   async updatPatientUser(

@@ -16,7 +16,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  login({ role, ...data }: LoginDto) {
+  login(@Body() { role, ...data }: LoginDto) {
     return this.authService.login({ ...data, role: role as Role });
   }
 }

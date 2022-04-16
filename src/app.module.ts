@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { ArticleTagsModule } from './article-tags/article-tags.module';
 import { ArticleTopicsModule } from './article-topics/article-topics.module';
 import { ArticlesModule } from './articles/articles.module';
+import { AuthModule } from './auth/auth.module';
 import { CarouselsModule } from './carousels/carousels.module';
 import { ClinicsModule } from './clinic/clinic.module';
 import { DistrictsModule } from './districts/districts.module';
@@ -54,6 +55,7 @@ import { SpecialtiesModule } from './specialties/specialties.module';
     DistrictsModule,
     RegionsModule,
     PatientUsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
