@@ -56,7 +56,9 @@ export class DoctorUsersService {
       options,
     );
     if (!result) {
-      throw new NotFoundException(getResponseByErrorCode('CAROUSEL_NOT_FOUND'));
+      throw new NotFoundException(
+        getResponseByErrorCode('DOCTOR_USER_NOT_FOUND'),
+      );
     }
     return result;
   }
@@ -71,7 +73,7 @@ export class DoctorUsersService {
     const specialty = await this.specialtiesService.getSpecialtyOrFail({
       id: specialtyId,
     });
-    const doctorUser = await this.doctorUsersRepository.save({
+    await this.doctorUsersRepository.save({
       email,
       password: await encryptPassword(password),
       doctor: {

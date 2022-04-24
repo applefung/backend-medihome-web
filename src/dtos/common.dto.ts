@@ -48,6 +48,10 @@ class TimeslotDto {
 
   @IsString()
   toTime: string;
+
+  @IsOptional()
+  @IsArray()
+  patientIds: string[];
 }
 
 export class BusinessHoursDto {

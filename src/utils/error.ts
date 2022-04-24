@@ -10,6 +10,7 @@ export type ErrorCode =
   | 'CAROUSEL_NOT_FOUND'
   | 'SPECIALTY_NOT_FOUND'
   | 'DOCTOR_NOT_FOUND'
+  | 'DOCTOR_USER_NOT_FOUND'
   | 'DOCTOR_COMMENT_NOT_FOUND'
   | 'ARTICLE_TOPIC_NOT_FOUND'
   | 'ARTICLE_TAG_NOT_FOUND'
@@ -91,6 +92,13 @@ const errorMap = new Map<ErrorCode, ErrorResponse>([
     {
       code: '40001',
       message: 'Doctor not found',
+    },
+  ],
+  [
+    'DOCTOR_USER_NOT_FOUND',
+    {
+      code: '40002',
+      message: 'Doctor user not found',
     },
   ],
   [

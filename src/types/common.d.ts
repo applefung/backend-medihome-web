@@ -18,6 +18,7 @@ export interface MtrType {
 export interface Timeslot {
   fromTime: string;
   toTime: string;
+  patientIds: string[];
 }
 export type BusinessHours = Partial<
   Record<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun', Timeslot[]>
