@@ -13,10 +13,12 @@ import {
   Entity,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { District } from './district.entity';
+import { DoctorClinicReservationTimeslot } from './doctor-clinic-reservation-timeslot.entity';
 import { Doctor } from './doctor.entity';
 
 @Entity()
@@ -44,6 +46,12 @@ export class Clinic {
 
   @Column({ type: 'json', nullable: true })
   reservationTime: ReservationTime[];
+
+  @OneToMany(
+    () => DoctorClinicReservationTimeslot,
+    (doctorClinicReservationTimeslot) => doctorClinicReservationTimeslot.clinic,
+  )
+  doctorClinicReservationTimeslots: DoctorClinicReservationTimeslot;
 
   @ManyToMany(() => Doctor, (doctor) => doctor.clinics)
   doctors: Doctor[];

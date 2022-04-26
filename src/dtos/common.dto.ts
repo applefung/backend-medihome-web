@@ -42,7 +42,7 @@ export class MtrDto {
   exit: string;
 }
 
-class TimeslotDto {
+export class TimeslotDto {
   @IsString()
   fromTime: string;
 
