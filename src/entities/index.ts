@@ -14,3 +14,5 @@ export * from './district.entity';
 export * from './region.entity';
 export * from './mtr.entity';
 export * from './doctor-comment.entity';
+export * from './doctor-clinic-reservation-timeslot.entity';
+export * from './reservation-record.entity';
