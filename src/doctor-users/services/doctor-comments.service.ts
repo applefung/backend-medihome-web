@@ -1,13 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DoctorComment } from '@src/entities';
-import { PatientUsersService } from '@src/patient-users/patient-users.service';
+import { DoctorCommentType } from '@src/types/doctor-comment';
 import { getResponseByErrorCode } from '@src/utils/error';
 import { FindConditions, FindOneOptions, Repository } from 'typeorm';
 import { DoctorUsersService } from './doctor-users.service';
-
-type DoctorCommentType = Record<'doctorUserId' | 'patientUserId', string> &
-  Pick<DoctorComment, 'title' | 'content' | 'rating'>;
 
 @Injectable()
 export class DoctorCommentsService {
@@ -15,7 +12,6 @@ export class DoctorCommentsService {
     @InjectRepository(DoctorComment)
     private doctorCommentsRepository: Repository<DoctorComment>,
     private doctorUsersService: DoctorUsersService,
-    private patientUsersService: PatientUsersService,
   ) {}
   async getDoctorCommentsByDoctorId(id: string) {
     const doctorUser = await this.doctorUsersService.getDoctorUserOrFail({
@@ -45,24 +41,6 @@ export class DoctorCommentsService {
       );
     }
     return result;
-  }
-
-  async createComment({
-    doctorUserId,
-    patientUserId,
-    ...data
-  }: DoctorCommentType) {
-    const doctorUser = await this.doctorUsersService.getDoctorUserOrFail({
-      id: doctorUserId,
-    });
-    const patientUser = await this.patientUsersService.getPatientUserOrFail({
-      id: patientUserId,
-    });
-    await this.doctorCommentsRepository.save({
-      ...data,
-      doctorUser,
-      patientUser,
-    });
   }
 
   async updateDoctorComment(id: string, data: DoctorCommentType) {

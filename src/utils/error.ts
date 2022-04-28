@@ -12,6 +12,7 @@ export type ErrorCode =
   | 'DOCTOR_NOT_FOUND'
   | 'DOCTOR_USER_NOT_FOUND'
   | 'DOCTOR_COMMENT_NOT_FOUND'
+  | 'DOCTOR_CLINIC_RESERVATION_TIMESLOT_NOT_FOUND'
   | 'ARTICLE_TOPIC_NOT_FOUND'
   | 'ARTICLE_TAG_NOT_FOUND'
   | 'ARTICLE_ID_IN_MAP_NOT_FOUND'
@@ -99,6 +100,13 @@ const errorMap = new Map<ErrorCode, ErrorResponse>([
     {
       code: '40002',
       message: 'Doctor user not found',
+    },
+  ],
+  [
+    'DOCTOR_CLINIC_RESERVATION_TIMESLOT_NOT_FOUND',
+    {
+      code: '40003',
+      message: 'Doctor clinic reservation timeslot not found',
     },
   ],
   [

@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PatientUser } from '@src/entities';
+import { DoctorUsersService } from '@src/doctor-users/services/doctor-users.service';
+import { DoctorComment, PatientUser } from '@src/entities';
 import { UserLog } from '@src/entities/user-log.entity';
+import { DoctorCommentType } from '@src/types/doctor-comment';
 import { encryptPassword } from '@src/utils/auth';
 import { getResponseByErrorCode } from '@src/utils/error';
 import {
@@ -18,6 +20,9 @@ export class PatientUsersService {
     private patientUsersRepository: Repository<PatientUser>,
     @InjectRepository(UserLog)
     private userLogRepository: Repository<UserLog>,
+    @InjectRepository(PatientUser)
+    private doctorCommentsRepository: Repository<DoctorComment>,
+    private doctorUsersService: DoctorUsersService,
   ) {}
   // ! May need pagination
   getPatientUsers() {
@@ -93,6 +98,24 @@ export class PatientUsersService {
         },
       },
     );
+  }
+
+  async createComment({
+    doctorUserId,
+    patientUserId,
+    ...data
+  }: DoctorCommentType) {
+    const doctorUser = await this.doctorUsersService.getDoctorUserOrFail({
+      id: doctorUserId,
+    });
+    const patientUser = await this.getPatientUserOrFail({
+      id: patientUserId,
+    });
+    await this.doctorCommentsRepository.save({
+      ...data,
+      doctorUser,
+      patientUser,
+    });
   }
 
   async deletePatientUser(id: string) {

@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TokenRecord } from '@src/entities';
-import { PatientUsersService } from '@src/patient-users/patient-users.service';
+import { PatientUsersService } from '@src/patient-users/services/patient-users.service';
 import type { AccessTokenPayload, Role, Token } from '@src/types/auth.d';
 import { TokenType, verifyPassword } from '@src/utils/auth';
 import { getResponseByErrorCode } from '@src/utils/error';

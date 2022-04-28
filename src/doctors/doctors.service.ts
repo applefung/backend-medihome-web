@@ -135,7 +135,7 @@ export class DoctorsService {
     conditions: FindConditions<Doctor>,
     options?: FindOneOptions<Doctor>,
   ) {
-    return this.doctorsRepository.findOne(conditions, options);
+    return this.doctorsRepository.findOneOrFail(conditions, options);
   }
 
   async getDoctorOrFail(

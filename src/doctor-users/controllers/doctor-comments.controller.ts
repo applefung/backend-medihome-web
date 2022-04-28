@@ -24,11 +24,6 @@ export class DoctorCommentsController {
     return this.doctorCommentsService.getDoctorComment({ id });
   }
 
-  @Post('comments')
-  async createDoctorComment(@Body() data: DoctorCommentDto) {
-    await this.doctorCommentsService.createComment(data);
-  }
-
   @Patch('comments/:commentId')
   async updateDoctorComment(
     @Param('commentId') id: string,

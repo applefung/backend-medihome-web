@@ -10,10 +10,11 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import dayjs from 'dayjs';
-import { PatientUsersService } from './patient-users.service';
-import { PatientUserDto } from './dtos';
+import { PatientUsersService } from '../services/patient-users.service';
+import { PatientUserDto } from '../dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Gender } from '@src/utils/common';
+import { DoctorCommentDto } from '@src/doctor-users/dtos';
 
 @Controller('patient-users')
 export class PatientUsersController {
@@ -70,6 +71,11 @@ export class PatientUsersController {
   ) {
     await this.patientUsersService.getPatientUserOrFail({ id });
     return this.patientUsersService.updateAvatar(id, file);
+  }
+
+  @Post('comments')
+  async createDoctorComment(@Body() data: DoctorCommentDto) {
+    await this.patientUsersService.createComment(data);
   }
 
   @Delete(':id')

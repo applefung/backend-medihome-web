@@ -23,7 +23,6 @@ import { DoctorUsersService } from './services/doctor-users.service';
       DoctorClinicReservationTimeslot,
     ]),
     SpecialtiesModule,
-    PatientUsersModule,
     ClinicsModule,
   ],
   controllers: [
@@ -36,6 +35,10 @@ import { DoctorUsersService } from './services/doctor-users.service';
     DoctorCommentsService,
     DoctorClinicReservationTimeslotService,
   ],
-  exports: [DoctorUsersService, DoctorCommentsService],
+  exports: [
+    DoctorUsersService,
+    DoctorCommentsService,
+    DoctorClinicReservationTimeslotService,
+  ],
 })
 export class DoctorUsersModule {}
