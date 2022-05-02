@@ -6,7 +6,6 @@ import {
   DoctorComment,
   DoctorUser,
 } from '@src/entities';
-import { PatientUsersModule } from '@src/patient-users/patient-users.module';
 import { SpecialtiesModule } from '@src/specialties/specialties.module';
 import { DoctorClinicReservationTimeslotController } from './controllers/doctor-clinic-reservation-timeslot..controller';
 import { DoctorCommentsController } from './controllers/doctor-comments.controller';

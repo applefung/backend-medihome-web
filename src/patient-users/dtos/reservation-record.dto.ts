@@ -4,8 +4,4 @@ export class ReservationRecordDto {
   @IsUUID()
   @IsString()
   doctorClinicReservationTimeslotId: string;
-
-  @IsUUID()
-  @IsString()
-  patientUserId: string;
 }

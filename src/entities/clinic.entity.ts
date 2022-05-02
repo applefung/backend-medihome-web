@@ -44,9 +44,6 @@ export class Clinic {
   @Column({ type: 'json', nullable: true })
   businessHours: BusinessHours;
 
-  @Column({ type: 'json', nullable: true })
-  reservationTime: ReservationTime[];
-
   @OneToMany(
     () => DoctorClinicReservationTimeslot,
     (doctorClinicReservationTimeslot) => doctorClinicReservationTimeslot.clinic,

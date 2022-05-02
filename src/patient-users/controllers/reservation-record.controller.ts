@@ -18,12 +18,16 @@ export class ReservationRecordController {
     return this.reservationRecordService.getReservationRecord({ id });
   }
 
-  @Post('reservation-records')
+  @Post(':id/reservation-records')
   async createReservationRecord(
+    @Param('id') id,
     @Body()
-    data: ReservationRecordDto,
+    { doctorClinicReservationTimeslotId }: ReservationRecordDto,
   ) {
-    await this.reservationRecordService.createReservationRecord(data);
+    await this.reservationRecordService.createReservationRecord({
+      patientUserId: id,
+      doctorClinicReservationTimeslotId,
+    });
   }
 
   @Delete(':id')

@@ -93,9 +93,13 @@ export class DoctorsService {
 
     const finalResult = await Promise.all(
       result.map(async ({ id, ...item }) => {
-        const doctorUser = await this.doctorUsersService.getDoctorUser({
-          doctor: { id },
-        });
+        const doctorUser = await this.doctorUsersService.getDoctorUser(
+          {
+            doctor: { id },
+          },
+          { relations: ['doctorClinicReservationTimeslot'] },
+        );
+
         if (doctorUser) {
           const doctorComments =
             await this.doctorCommentsService.getDoctorCommentsByDoctorId(
@@ -111,12 +115,14 @@ export class DoctorsService {
             rating,
             id,
             ...item,
+            reservationTimeslots: doctorUser.doctorClinicReservationTimeslot,
           };
         }
         return {
           rating: 0,
           id,
           ...item,
+          reservationTimeslots: [],
         };
       }),
     );

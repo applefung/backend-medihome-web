@@ -17,9 +17,10 @@ export class DoctorClinicReservationTimeslotController {
 
   @Post(':id/clinic-reservation-timeslots')
   async createDoctorClinicReservationTimeslot(
-    @Param('id') doctorUserId,
+    @Param('id') doctorUserId: string,
     @Body() data: DoctorClinicReservationTimeslotDto,
   ) {
+    console.log('check');
     await this.doctorClinicReservationTimeslotService.createDoctorClinicReservationTimeslot(
       {
         doctorUserId,
