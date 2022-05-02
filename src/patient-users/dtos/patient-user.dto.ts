@@ -3,7 +3,6 @@ import {
   IsDefined,
   IsEmail,
   IsIn,
-  IsNumber,
   IsOptional,
   IsString,
   ValidateNested,

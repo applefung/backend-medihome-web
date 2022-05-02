@@ -17,6 +17,7 @@ export type ErrorCode =
   | 'ARTICLE_TAG_NOT_FOUND'
   | 'ARTICLE_ID_IN_MAP_NOT_FOUND'
   | 'CLINIC_NOT_FOUND'
+  | 'RESERVATION_RECORD_NOT_FOUND'
   | 'DISTRICT_NOT_FOUND'
   | 'REGION_NOT_FOUND'
   | 'PATIENT_USER_NOT_FOUND';
@@ -142,6 +143,13 @@ const errorMap = new Map<ErrorCode, ErrorResponse>([
     {
       code: '70001',
       message: 'Clinic not found',
+    },
+  ],
+  [
+    'RESERVATION_RECORD_NOT_FOUND',
+    {
+      code: '70001',
+      message: 'Reservation record not found',
     },
   ],
   [

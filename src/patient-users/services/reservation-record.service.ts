@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DoctorClinicReservationTimeslotService } from '@src/doctor-users/services/doctor-clinic-reservation-timeslot..service';
 import { ReservationRecord } from '@src/entities';
+import { getResponseByErrorCode } from '@src/utils/error';
 import {
   FindConditions,
   FindManyOptions,
@@ -30,6 +31,22 @@ export class ReservationRecordService {
     return this.reservationRecordRepository.findOne(conditions, options);
   }
 
+  async getReservationRecordOrFail(
+    conditions: FindConditions<ReservationRecord>,
+    options?: FindOneOptions<ReservationRecord>,
+  ) {
+    const result = await this.reservationRecordRepository.findOne(
+      conditions,
+      options,
+    );
+    if (!result) {
+      throw new NotFoundException(
+        getResponseByErrorCode('RESERVATION_RECORD_NOT_FOUND'),
+      );
+    }
+    return result;
+  }
+
   async createReservationRecord({
     doctorClinicReservationTimeslotId,
     patientUserId,
@@ -49,7 +66,7 @@ export class ReservationRecordService {
     });
   }
 
-  async deleterReservationRecord(id: string) {
+  async deleteReservationRecord(id: string) {
     await this.reservationRecordRepository.softDelete(id);
   }
 }
