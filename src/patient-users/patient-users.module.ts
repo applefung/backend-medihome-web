@@ -10,7 +10,9 @@ import {
   DoctorComment,
 } from '@src/entities';
 import { PatientUsersController } from './controllers/patient-users.controller';
+import { ReservationRecordController } from './controllers/reservation-record.controller';
 import { PatientUsersService } from './services/patient-users.service';
+import { ReservationRecordService } from './services/reservation-record.service';
 
 @Module({
   imports: [
@@ -23,8 +25,8 @@ import { PatientUsersService } from './services/patient-users.service';
     ]),
     DoctorUsersModule,
   ],
-  controllers: [PatientUsersController],
-  providers: [PatientUsersService],
+  controllers: [PatientUsersController, ReservationRecordController],
+  providers: [PatientUsersService, ReservationRecordService],
   exports: [PatientUsersService],
 })
 export class PatientUsersModule {}

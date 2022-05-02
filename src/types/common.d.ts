@@ -16,8 +16,8 @@ export interface MtrType {
 }
 
 export interface Timeslot {
-  fromTime: string;
-  toTime: string;
+  startTime: string;
+  endTime: string;
   patientIds: string[];
 }
 export type BusinessHours = Partial<

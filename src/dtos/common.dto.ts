@@ -44,10 +44,10 @@ export class MtrDto {
 
 export class TimeslotDto {
   @IsString()
-  fromTime: string;
+  startTime: string;
 
   @IsString()
-  toTime: string;
+  endTime: string;
 
   @IsOptional()
   @IsArray()

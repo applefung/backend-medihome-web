@@ -1,7 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClinicsService } from '@src/clinic/clinic.service';
-import { DoctorClinicReservationTimeslot, DoctorComment } from '@src/entities';
+import { DoctorClinicReservationTimeslot } from '@src/entities';
 import { Timeslot } from '@src/types/common';
 import { getResponseByErrorCode } from '@src/utils/error';
 import { FindConditions, FindOneOptions, Repository } from 'typeorm';
@@ -10,7 +14,7 @@ import { DoctorUsersService } from './doctor-users.service';
 @Injectable()
 export class DoctorClinicReservationTimeslotService {
   constructor(
-    @InjectRepository(DoctorComment)
+    @InjectRepository(DoctorClinicReservationTimeslot)
     private doctorClinicReservationTimeslotRepository: Repository<DoctorClinicReservationTimeslot>,
     private doctorUsersService: DoctorUsersService,
     private clinicsService: ClinicsService,
@@ -51,7 +55,8 @@ export class DoctorClinicReservationTimeslotService {
   async createDoctorClinicReservationTimeslot({
     doctorUserId,
     clinicId,
-    ...data
+    date,
+    timeslot,
   }: Record<'doctorUserId' | 'clinicId' | 'date', string> &
     Record<'timeslot', Timeslot>) {
     const doctorUser = await this.doctorUsersService.getDoctorUserOrFail({
@@ -60,10 +65,27 @@ export class DoctorClinicReservationTimeslotService {
     const clinic = await this.clinicsService.getClinicOrFail({
       id: clinicId,
     });
+
+    const { startTime, endTime } = timeslot;
+
+    const result = await this.doctorClinicReservationTimeslotRepository
+      .createQueryBuilder('doctorClinicReservationTimeslot')
+      .where(
+        `"doctorClinicReservationTimeslot".timeslot->>'startTime' = '${startTime}' AND "doctorClinicReservationTimeslot".timeslot->>'endTime' = '${endTime}' AND "doctorClinicReservationTimeslot"."doctorUserId" = '${doctorUser.id}' AND "doctorClinicReservationTimeslot"."clinicId" = '${clinic.id}'`,
+      )
+      .getMany();
+
+    if (result.length) {
+      throw new ConflictException(
+        getResponseByErrorCode('RESERVATION_RECORD_ALREADY_EXIST'),
+      );
+    }
+
     await this.doctorClinicReservationTimeslotRepository.save({
-      ...data,
       doctorUser,
       clinic,
+      date,
+      timeslot,
     });
   }
 
