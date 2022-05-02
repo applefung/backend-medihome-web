@@ -1,11 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { DoctorClinicReservationTimeslotDto } from '../dtos';
 import { DoctorClinicReservationTimeslotService } from '../services/doctor-clinic-reservation-timeslot..service';
+import { DoctorUsersService } from '../services/doctor-users.service';
 
 @Controller('doctor-users')
 export class DoctorClinicReservationTimeslotController {
   constructor(
     private readonly doctorClinicReservationTimeslotService: DoctorClinicReservationTimeslotService,
+    private readonly doctorUsersService: DoctorUsersService,
   ) {}
 
   @Get(':id/clinic-reservation-timeslot')
@@ -20,7 +22,11 @@ export class DoctorClinicReservationTimeslotController {
     @Param('id') doctorUserId: string,
     @Body() data: DoctorClinicReservationTimeslotDto,
   ) {
-    console.log('check');
+    await this.doctorUsersService.getDoctorUserOrFail(
+      { id: doctorUserId },
+      { relations: ['doctor', 'doctor.clinics'] },
+    );
+
     await this.doctorClinicReservationTimeslotService.createDoctorClinicReservationTimeslot(
       {
         doctorUserId,
